@@ -22,6 +22,7 @@ import org.eclipse.rdf4j.model.vocabulary.RDFS;
 import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import java.lang.String;
+import static java.util.Collections.list;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.unimaas.ids.rdf2api.io.utils.RDFUtils;
@@ -29,12 +30,13 @@ import nl.unimaas.ids.rdf2api.io.utils.RDFUtils;
 import org.eclipse.rdf4j.model.impl.SimpleIRI;
 import org.eclipse.rdf4j.model.impl.URIImpl;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
+import nl.unimaas.ids.data2services.util.iface.ReadEntities;
 
 /**
  *
  * @author nuno
  */
-public class ReadFileEntities implements ReadEntitiesInterface{
+public class ReadEntitiesFromFile implements ReadEntities{
 
     
     
@@ -76,23 +78,13 @@ public class ReadFileEntities implements ReadEntitiesInterface{
 "<http://fdp.wikipathways.org/fdp> r3d:institutionCountry <http://lexvo.org/id/iso3166/NL> ;"+
 "	r3d:dataCatalog <http://fdp.wikipathways.org/fdp/catalog/catalog> .";
 
-    public ReadFileEntities() {
+    public ReadEntitiesFromFile() {
     }
 	
     public static void main(String[] args){
         System.out.println("Starting...");
         
-        ReadFileEntities rfe = new ReadFileEntities();
-        List<Statement> statements;
-        try {
-            statements = RDFUtils.getStatements( rfe.myvar , new URIImpl("http://fdp.wikipathways.org/fdp"),  RDFFormat.TURTLE);
-            List l = rfe.parse(statements, new URIImpl("http://fdp.wikipathways.org/fdp"));
-            
-           
-            
-        } catch (Exception ex) {
-            Logger.getLogger(ReadFileEntities.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         
        
     }
@@ -128,7 +120,7 @@ public class ReadFileEntities implements ReadEntitiesInterface{
        
 //    }
     
-    public List<String> parse(List<Statement> statements, IRI metadataUri){
+    private List<String> parse(List<Statement> statements, IRI metadataUri){
         //LOGGER.info("Parse common metadata properties");
         List<String> l = new ArrayList();
                 
@@ -155,8 +147,20 @@ public class ReadFileEntities implements ReadEntitiesInterface{
     }
 
     @Override
-    public List<String> getEntities() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<String> getEntities(){
+        
+        List<Statement> statements;
+        List<String> l = null;
+        
+        try {
+            statements = RDFUtils.getStatements( this.myvar , new URIImpl("http://fdp.wikipathways.org/fdp"),  RDFFormat.TURTLE);
+            l = this.parse(statements, new URIImpl("http://fdp.wikipathways.org/fdp"));
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ReadEntitiesFromFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+     return l;
     }
     
 }

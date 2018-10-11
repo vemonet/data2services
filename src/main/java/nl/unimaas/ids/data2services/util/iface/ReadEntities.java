@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.unimaas.ids.data2services.util;
+package nl.unimaas.ids.data2services.util.iface;
 
 import java.net.URL;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author nuno
  */
-public interface ReadEntitiesInterface {
+public interface ReadEntities {
     public void setSource(URL url);
     public List<String> getEntities();
 }

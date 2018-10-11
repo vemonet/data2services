@@ -1,7 +1,5 @@
 package nl.unimaas.ids.rdf2api.io.utils;
 
-
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
