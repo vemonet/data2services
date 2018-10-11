@@ -12,25 +12,25 @@
     <rdf4j.version>2.1.4</rdf4j.version>
     <swagger-ui-version>3.18.0</swagger-ui-version>
     <binder-swagger-version>0.8.0</binder-swagger-version>
-    <jersey-version>2.0</jersey-version>
+    <jersey.version>2.26</jersey.version>
     <jetty-version>9.2.2.v20140723</jetty-version>
     <failsafe-version>2.18.1</failsafe-version>
   </properties>
 
   <dependencies>
-    <dependency>
+    <!--dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-models</artifactId>
       <version>${swagger-version}</version>
-    </dependency>
-    <dependency>
+    </dependency-->
+    <!--dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-core</artifactId>
       <version>${swagger-version}</version>
-    </dependency>
+    </dependency-->
 
     <!-- Not possible because takes over 1.5.12
-    dependency>
+    <dependency>
     <groupId>io.swagger</groupId>
     <artifactId>swagger-core</artifactId>
     <version>2.0.0-rc2</version>
@@ -41,13 +41,14 @@
     <version>2.0.0-rc2</version>
     </dependency-->
 
-    <dependency>
+    <!--dependency>
       <groupId>com.github.tminglei</groupId>
       <artifactId>binder-swagger-java</artifactId>
       <version>${binder-swagger-version}</version>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
+    </dependency-->
+    
+    <!--dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.1</version>
@@ -58,38 +59,47 @@
       <artifactId>servlet-api</artifactId>
       <version>2.5</version>
       <scope>provided</scope>
-    </dependency>
+    </dependency-->
     
     <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0.1</version>
+       <groupId>javax.ws.rs</groupId>
+       <artifactId>javax.ws.rs-api</artifactId>
+       <version>2.1</version>
+    </dependency>
+    
+
+    <dependency>
+       <groupId>org.glassfish.jersey.containers</groupId>
+       <artifactId>jersey-container-servlet</artifactId>
+       <version>${jersey.version}</version>
     </dependency>
     <dependency>
-        <groupId>org.glassfish.jersey.containers</groupId>
-        <artifactId>jersey-container-servlet</artifactId>
-        <version>2.27</version>
+       <groupId>org.glassfish.jersey.core</groupId>
+       <artifactId>jersey-server</artifactId>
+       <version>${jersey.version}</version>
     </dependency>
     <dependency>
-        <groupId>org.glassfish.jersey.core</groupId>
-        <artifactId>jersey-server</artifactId>
-        <version>2.27</version>
+       <groupId>org.glassfish.jersey.inject</groupId>
+       <artifactId>jersey-hk2</artifactId>
+       <version>${jersey.version}</version>
     </dependency>
+
     <dependency>
-        <groupId>org.glassfish.jersey.core</groupId>
-        <artifactId>jersey-client</artifactId>
-        <version>2.27</version>
-    </dependency>
-    <dependency>
-     <groupId>org.eclipse.rdf4j</groupId>
-     <artifactId>rdf4j-runtime</artifactId>
-     <version>${rdf4j.version}</version>
+       <groupId>org.eclipse.rdf4j</groupId>
+       <artifactId>rdf4j-runtime</artifactId>
+       <version>${rdf4j.version}</version>
     </dependency>
    <dependency>
      <groupId>org.eclipse.rdf4j</groupId>
      <artifactId>rdf4j-rio-api</artifactId>
      <version>${rdf4j.version}</version>
-     </dependency>  
+     </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <type>jar</type>
+    </dependency>
   </dependencies>
 
   <build>
