@@ -15,10 +15,25 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
+    <!--Webjars Servlet-->
+    <!--servlet>
+        <servlet-name>WebjarsServlet</servlet-name>
+        <servlet-class>org.webjars.servlet.WebjarsServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet-->
+ <!--servlet-mapping>
+        <servlet-name>WebjarsServlet</servlet-name>
+        <url-pattern>/webjars/*</url-pattern>
+    </servlet-mapping-->
+    
+    
    
     <servlet-mapping>
         <servlet-name>jersey-serlvet</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
+    
+    
       
 </web-app>

@@ -26,16 +26,20 @@ package nl.unimaas.ids.data2services.util;
 import io.swagger.models.Contact;
 import io.swagger.models.Info;
 import io.swagger.models.License;
+import io.swagger.models.Operation;
+import io.swagger.models.Path;
 import io.swagger.models.Swagger;
 import io.swagger.models.auth.In;
 import io.swagger.util.Json;
+import nl.unimaas.ids.data2services.util.iface.ReadEntities;
 
 /**
  *
  * @author nuno
  */
 public class SwaggerTest {
-
+    private Swagger swagger;
+     
     public static void main(String[] args) {
         new SwaggerTest().doSwagger();
     }
@@ -45,9 +49,9 @@ public class SwaggerTest {
 
     public Swagger doSwagger() {
 
-        Swagger swaggerObject = new Swagger();
+        swagger = new Swagger();
 
-        swaggerObject.info(new Info()
+        swagger.info(new Info()
                 .title("Bio2RDF")
                 .description("Bio2RDF is an open source project to generate and provide linked data for the life sciences.")
                 .termsOfService("https://github.com/bio2rdf/bio2rdf-scripts/wiki/Terms-of-use")
@@ -59,7 +63,13 @@ public class SwaggerTest {
                 .basePath("/api")
                 .consumes("application/json").consumes("application/xml")
                 .produces("application/json").produces("application/xml");
-        //.securityDefinition("api_key", apiKeyAuth("api_key", In.HEADER))
+        
+                
+                
+        
+
+        
+//.securityDefinition("api_key", apiKeyAuth("api_key", In.HEADER))
         //.securityDefinition("petstore_auth", oAuth2()
         //        .implicit("http://petstore.swagger.io/api/oauth/dialog")
         //        .scope("read:pets", "read your pets")
@@ -71,7 +81,28 @@ public class SwaggerTest {
         //        .externalDocs(externalDocs().description("Find out more about our store").url("http://swagger.io"))
         //);
 
-        return swaggerObject;
+        generateOperations();
+        
+        return swagger;
+    }
+    
+    private void generateOperations(){
+        
+        ReadEntities readEntities = new ReadEntitiesFromFile();
+        
+        List entityList = readEntities.getEntities();
+        
+        Operation operation = new Operation();
+        //operation.addParameter("helloParam");
+        
+        
+        Path path = new Path();
+        path.setGet(operation);
+        swagger.path("/test2", path);
+        
+
+        //SharingHolder sharing2 = sharing().pathPrefix("/getItem").tag("getItem");
+                   
     }
     
     public String getSwaggerJson(){
