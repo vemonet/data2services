@@ -8,7 +8,7 @@
   <name>data2services</name>
 
   <properties>
-    <swagger-version>1.5.12</swagger-version>
+    <swagger-version>1.5.21</swagger-version>
     <rdf4j.version>2.1.4</rdf4j.version>
     <swagger-ui-version>3.18.0</swagger-ui-version>
     <binder-swagger-version>0.8.0</binder-swagger-version>
@@ -32,7 +32,7 @@
         <groupId>org.webjars</groupId>
         <artifactId>swagger-ui</artifactId>
         <version>3.19.0</version>
-        <scope>runtime</scope>x
+        <scope>runtime</scope>
     </dependency>
     <!-- Not possible because takes over 1.5.12
     <dependency>

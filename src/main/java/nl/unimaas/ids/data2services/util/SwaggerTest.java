@@ -29,8 +29,10 @@ import io.swagger.models.License;
 import io.swagger.models.Operation;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
-import io.swagger.models.auth.In;
+import io.swagger.models.parameters.Parameter;
+import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
+import java.util.List;
 import nl.unimaas.ids.data2services.util.iface.ReadEntities;
 
 /**
@@ -90,18 +92,50 @@ public class SwaggerTest {
         
         ReadEntities readEntities = new ReadEntitiesFromFile();
         
-        List entityList = readEntities.getEntities();
+        List<String> entityList = readEntities.getEntities();
         
-        Operation operation = new Operation();
-        //operation.addParameter("helloParam");
+            
         
+            PathParameter parameter1 = new PathParameter();
+            parameter1.setName("entityURI");
+            parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+            
+            parameter1.setEnum(readEntities.getEntities());
+            parameter1.setType("string"); //TODO should it be URL (check types)
+            
+            parameter1.setDescription("parameter description");
+            
+            parameter1.setIn("path");
+
+            
+            PathParameter parameter2 = new PathParameter();
+            parameter2.setName("URI");
+            parameter2.setRequired(false); 
+            
+            //parameter2.setEnum(readEntities.getEntities());
+            parameter2.setType("string"); //TODO should it be URL (check types)
+            
+            parameter2.setDescription("parameter description");
+            
+            parameter2.setIn("path");
+            
+            
+            
+            
+            Operation operation = new Operation();
+            operation.addParameter(parameter1);
+            operation.description("operation description");
+            
+            operation.addParameter(parameter2);
+          
         
-        Path path = new Path();
-        path.setGet(operation);
-        swagger.path("/test2", path);
+            Path path = new Path();
+            path.setGet(operation);
+            
+            swagger.path("/entity/{entityURI}/{URI}", path);
         
 
-        //SharingHolder sharing2 = sharing().pathPrefix("/getItem").tag("getItem");
+            //SharingHolder sharing2 = sharing().pathPrefix("/getItem").tag("getItem");
                    
     }
     
