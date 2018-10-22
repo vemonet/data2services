@@ -29,7 +29,7 @@ package nl.unimaas.ids.data2services.model;
  *
  * @author nuno
  */
-public class Entity {
+public abstract class Entity {
    private String label;
 
     /**

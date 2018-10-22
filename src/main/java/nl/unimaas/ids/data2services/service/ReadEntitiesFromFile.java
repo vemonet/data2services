@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.unimaas.ids.data2services.util;
+package nl.unimaas.ids.data2services.service;
 
 import com.google.common.base.Preconditions;
 import java.io.ByteArrayInputStream;
@@ -29,12 +29,12 @@ import java.nio.charset.StandardCharsets;
 import static java.util.Collections.list;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.rdf2api.io.utils.RDFUtils;
 //import nl.unimaas.ids.rdf2api.io.utils.RDFUtils;
 import org.eclipse.rdf4j.model.impl.SimpleIRI;
 import org.eclipse.rdf4j.model.impl.URIImpl;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
-import nl.unimaas.ids.data2services.util.iface.ReadEntities;
 import org.eclipse.rdf4j.model.URI;
 import org.eclipse.rdf4j.model.vocabulary.FOAF;
 import org.eclipse.rdf4j.query.BindingSet;
@@ -55,7 +55,7 @@ import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
  *
  * @author nuno
  */
-public class ReadEntitiesFromFile implements ReadEntities{
+public class ReadEntitiesFromFile /*implements ReadEntities*/{
 
     
     
@@ -103,9 +103,10 @@ public class ReadEntitiesFromFile implements ReadEntities{
     public static void main(String[] args){
         System.out.println("Starting...");
         ReadEntitiesFromFile entities = new ReadEntitiesFromFile();
-        //entities.getEntity();
-        entities.getEntity("http://vocabularies.wikipathways.org/wp#Pathway");
-        entities.getEntityList(new URIImpl("http://vocabularies.wikipathways.org/wp#Pathway"));
+        //entities.getClassList();
+        //entities.getSubjectListByClass(new URIImpl("http://vocabularies.wikipathways.org/wp#Pathway"));
+        entities.getClassList();
+        //entities.getSubject(new URIImpl("http://identifiers.org/wikipathways/WP1000_r80835"));
     }
     
     
@@ -160,12 +161,11 @@ public class ReadEntitiesFromFile implements ReadEntities{
         return l;
     }
     
-    @Override
+    //@Override
     public void setSource(URL url) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public List<String> getEntities(){
         
         List<Statement> statements;
@@ -173,7 +173,7 @@ public class ReadEntitiesFromFile implements ReadEntities{
         
         try {
             statements = RDFUtils.getStatements( this.myvar , new URIImpl("http://fdp.wikipathways.org/fdp"),  RDFFormat.TURTLE);
-            l = this.parse(statements, new URIImpl("http://fdp.wikipathways.org/fdp"));
+            l = this.parse(statements, new URIImpl("http://graphdb.dumontierlab.com/repositories/ncats-red-kg"));
             
         } catch (Exception ex) {
             Logger.getLogger(ReadEntitiesFromFile.class.getName()).log(Level.SEVERE, null, ex);
@@ -183,7 +183,7 @@ public class ReadEntitiesFromFile implements ReadEntities{
     }
     
     private RepositoryConnection getConnection(){
-         String endpointURL = "http://sparql.wikipathways.org/";
+         String endpointURL = "http://graphdb.dumontierlab.com/repositories/ncats-red-kg";
         
         //HTTPRepository sparqlEndpoint = new SPARQLRepository(endpointURL, "");
         //sparqlEndpoint.initialize();
@@ -196,11 +196,15 @@ public class ReadEntitiesFromFile implements ReadEntities{
     }
 
     
-    public void getEntity(String entity){
+    
+    public  List<IRIEntity> getClassList(){
+            
+            List<IRIEntity> classList = new ArrayList();
+            
             RepositoryConnection conn = getConnection();
             
             //String queryString = "select ?Concept where {[] a "+entity.stringValue()+"}";
-            String queryString = "select ?Concept where {[] a "+entity+"}";
+            String queryString = "select distinct ?Concept where {[] a ?Concept}";
             
             TupleQuery query = conn.prepareTupleQuery(queryString);
             // A QueryResult is also an AutoCloseable resource, so make sure it gets
@@ -214,28 +218,79 @@ public class ReadEntitiesFromFile implements ReadEntities{
                     // for ?s and ?n
                     System.out.println("?s = " + solution.getValue("Concept"));
                     //System.out.println("?n = " + solution.getValue("n"));
+                    IRIEntity iriEntity = new IRIEntity();
+                    
+                    iriEntity.setIRI(solution.getValue("Concept").stringValue());
+                    iriEntity.setLabel(this.generateLabel(solution.getValue("Concept").stringValue()));
+                    
+                    classList.add(iriEntity);
                 }
+              
             } catch (Exception e){
                 System.out.println(e);
             } finally {
             
             }
-    
+            
+            return classList;
     }
     
-    
-    public void getEntityList(URI uri) {
+    public String getSubject(URI subjectURI){
             RepositoryConnection conn = getConnection();
-       
+               
             //Repository repository = repositoryManager.getRepository("RepositoryID"); 
             // Open a connection to this repository
             // Open a connection to the database
             
-            String queryString = "SELECT ?s ?p ?o\n" +
+            String queryString = "SELECT ?p ?o \n" +
                 "WHERE {\n" +
-                "  ?s rdf:type <"+uri.stringValue()+">;\n" +
-                "  ?p ?o.\n" +
+                "  <"+subjectURI.stringValue()+"> ?p ?o.\n" +
+                "}";
+            
+            
+            
+            TupleQuery query = conn.prepareTupleQuery(queryString);
+            // A QueryResult is also an AutoCloseable resource, so make sure it gets
+            // closed when done.
+            //List<IRIEntity> l = new ArrayList();
+            
+            String s = "";
+            
+            try (TupleQueryResult result = query.evaluate()) {
+                // we just iterate over all solutions in the result...
+                while (result.hasNext()) {
+                    BindingSet solution = result.next();
+                    // ... and print out the value of the variable bindings
+                    // for ?s and ?n
+                    //System.out.println("?s = " + solution.getValue("s") + " " + solution.getValue("o"));
+                    //System.out.println("?n = " + solution.getValue("n"));
+                    //IRIEntity iriEntity = new IRIEntity();
+                    //iriEntity.setLabel(solution.getValue("o")+"");
+                    s += "<"+subjectURI.stringValue() + "> <" + solution.getValue("p").toString() + "> <" + solution.getValue("o").toString() + ">\n"; 
+                    System.out.println(s);
+                }
+            } catch (Exception e){
+                System.out.println(e);
+            } finally {
+           
+            }
+
+
+        return s;
+    }
+    
+    
+    public List<IRIEntity> getSubjectListByClass(URI classURI) {
+            RepositoryConnection conn = getConnection();
+            List<IRIEntity> l = new ArrayList();
+            
+            String queryString = "SELECT ?s ?p ?o \n" +
+                "WHERE {\n" +
+                "  ?s rdf:type <"+classURI.stringValue()+">.\n" +
+                //"  ?p ?o.\n" +
                 "} ORDER BY ?s";
+            
+            System.out.println(queryString);
             
             TupleQuery query = conn.prepareTupleQuery(queryString);
             // A QueryResult is also an AutoCloseable resource, so make sure it gets
@@ -247,14 +302,21 @@ public class ReadEntitiesFromFile implements ReadEntities{
                     BindingSet solution = result.next();
                     // ... and print out the value of the variable bindings
                     // for ?s and ?n
-                    System.out.println("?s = " + solution.getValue("o"));
+                    //System.out.println("?s = " + solution.getValue("s"));
                     //System.out.println("?n = " + solution.getValue("n"));
+                    
+                    IRIEntity iriEntity = new IRIEntity();
+                    iriEntity.setLabel(this.generateLabel(solution.getValue("s").stringValue()));
+                    iriEntity.setIRI(solution.getValue("s").stringValue());
+                    l.add(iriEntity);
                 }
             } catch (Exception e){
                 System.out.println(e);
             } finally {
             
             }
+            
+            return l;
     }  
     
     public void getEntityTesting(URI uri) {
@@ -301,6 +363,10 @@ public class ReadEntitiesFromFile implements ReadEntities{
             // Before our program exits, make sure the database is properly shut down.
             db.shutDown();
         }
+    }
+    
+    private String generateLabel(String str){
+        return str.replaceAll("[^a-zA-Z0-9]", "");
     }
     
 }

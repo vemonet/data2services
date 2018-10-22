@@ -23,25 +23,39 @@
  */
 package nl.unimaas.ids.data2services.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.eclipse.rdf4j.model.IRI;
+
 /**
  *
  * @author nuno
  */
-public class NamedQuery {
-       private String label;
-
+public class NamedQueryEntity extends Entity {
+    private String query = "";    
+    private List<QueryVariable> variableList = new ArrayList(); 
+    
     /**
-     * @return the entityName
+     * @return the query
      */
-    public String getLabel() {
-        return label;
+    public String getQuery() {
+        return query;
     }
 
     /**
-     * @param entityName the entityName to set
+     * @param query the query to set
      */
-    public void setLabel(String label) {
-        this.label = label;
+    public void setQuery(String query) {
+        this.query = query;
     }
+    
+    public void addVariable(QueryVariable queryVariable){
+        this.variableList.add(queryVariable);
+    }
+    
+    public List<QueryVariable> getVariableList(){
+        return variableList;
+    }
+    
     
 }

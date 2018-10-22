@@ -23,6 +23,7 @@
  */
 package nl.unimaas.ids.data2services.util;
 
+import nl.unimaas.ids.data2services.service.ReadEntitiesFromFile;
 import io.swagger.models.Contact;
 import io.swagger.models.Info;
 import io.swagger.models.License;
@@ -33,20 +34,24 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
 import java.util.List;
-import nl.unimaas.ids.data2services.util.iface.ReadEntities;
+import nl.unimaas.ids.data2services.model.IRIEntity;
+import nl.unimaas.ids.data2services.model.NamedQueryEntity;
+import nl.unimaas.ids.data2services.model.QueryVariable;
+import nl.unimaas.ids.data2services.service.ReadEntities;
+import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
 
 /**
  *
  * @author nuno
  */
-public class SwaggerTest {
+public class SwaggerTest1 {
     private Swagger swagger;
      
     public static void main(String[] args) {
         new SwaggerTest().doSwagger();
     }
 
-    public SwaggerTest() {
+    public SwaggerTest1() {
     }
 
     public Swagger doSwagger() {
@@ -63,7 +68,7 @@ public class SwaggerTest {
                 )
         ).host("localhost:8080")
                 .basePath("/api")
-                .consumes("application/json").consumes("application/xml")
+                //.consumes("application/json").consumes("application/xml")
                 .produces("application/json").produces("application/xml");
         
                 
@@ -84,59 +89,105 @@ public class SwaggerTest {
         //);
 
         generateOperations();
+        generateQueryOperations();
         
         return swagger;
     }
     
     private void generateOperations(){
         
-        ReadEntities readEntities = new ReadEntitiesFromFile();
+        ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
         
-        List<String> entityList = readEntities.getEntities();
+        List<IRIEntity> entityList = readEntities.getClassList();
         
-            
+            for(IRIEntity iriEntity : entityList){
         
-            PathParameter parameter1 = new PathParameter();
-            parameter1.setName("entityURI");
-            parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-            
-            parameter1.setEnum(readEntities.getEntities());
-            parameter1.setType("string"); //TODO should it be URL (check types)
-            
-            parameter1.setDescription("parameter description");
-            
-            parameter1.setIn("path");
+                PathParameter parameter1 = new PathParameter();
+                parameter1.setName("entityURI");
+                parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
 
+                parameter1.setEnum(readEntities.getEntities());
+                parameter1.setType("string"); //TODO should it be URL (check types)
+
+                parameter1.setDescription("parameter description");
+
+                parameter1.setIn("path");
+
+
+                PathParameter parameter2 = new PathParameter();
+                parameter2.setName("URI");
+                parameter2.setRequired(false); 
+
+                //parameter2.setEnum(readEntities.getEntities());
+                parameter2.setType("string"); //TODO should it be URL (check types)
+
+                parameter2.setDescription("parameter description");
+
+                parameter2.setIn("path");
+
+
+
+
+                Operation operation = new Operation();
+                operation.addParameter(parameter1);
+                operation.description("operation description");
+
+                operation.addParameter(parameter2);
+
+
+                Path path = new Path();
+                path.setGet(operation);
+
+                swagger.path("/"+iriEntity.getLabel()+"/{entityURI}", path);
             
-            PathParameter parameter2 = new PathParameter();
-            parameter2.setName("URI");
-            parameter2.setRequired(false); 
-            
-            //parameter2.setEnum(readEntities.getEntities());
-            parameter2.setType("string"); //TODO should it be URL (check types)
-            
-            parameter2.setDescription("parameter description");
-            
-            parameter2.setIn("path");
-            
-            
-            
-            
-            Operation operation = new Operation();
-            operation.addParameter(parameter1);
-            operation.description("operation description");
-            
-            operation.addParameter(parameter2);
-          
-        
-            Path path = new Path();
-            path.setGet(operation);
-            
-            swagger.path("/entity/{entityURI}/{URI}", path);
-        
+            }
 
             //SharingHolder sharing2 = sharing().pathPrefix("/getItem").tag("getItem");
                    
+    }
+    
+    
+    
+    private void generateQueryOperations(){
+        ReadQueriesFromFile readQueriesFromFile = new ReadQueriesFromFile();
+        List<NamedQueryEntity> namedQueryList = readQueriesFromFile.getNamedQueryList();
+    
+       // System.out.println(namedQueryList.);
+        
+        Operation operation = new Operation();
+        
+        String sPath = "/pathwayListBySpecies/";
+        
+        for(NamedQueryEntity nqe : namedQueryList){
+            List<QueryVariable> variableList = nqe.getVariableList();
+            
+            for(QueryVariable queryVariable : variableList){
+                
+                PathParameter parameter = new PathParameter();
+                parameter.setName( queryVariable.getLabel() );
+                parameter.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+
+                //parameter.setEnum(readEntities.getEntities());
+                parameter.setType("string"); 
+
+                parameter.setDescription("parameter description");
+
+                parameter.setIn("path");
+                
+                operation.addParameter(parameter);
+                
+                 
+                sPath += "{"+queryVariable.getLabel()+"}/" ;
+            }
+            
+
+                  
+        }
+        
+        Path path = new Path();
+        path.setGet(operation);
+        this.swagger.path(sPath, path);
+        
     }
     
     public String getSwaggerJson(){

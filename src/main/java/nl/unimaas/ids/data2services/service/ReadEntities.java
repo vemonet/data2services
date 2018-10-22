@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.unimaas.ids.data2services.util.iface;
+package nl.unimaas.ids.data2services.service;
 
 import java.net.URL;
 import java.util.List;
