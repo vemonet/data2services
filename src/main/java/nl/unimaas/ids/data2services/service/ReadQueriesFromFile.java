@@ -39,7 +39,7 @@ import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
  *
  * @author nuno
  */
-public class ReadQueriesFromFile {
+public class ReadQueriesFromFile  extends Entity{
     
     String queryString  = "PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> "
             + "PREFIX dc:      <http://purl.org/dc/elements/1.1/> "
@@ -133,20 +133,5 @@ public class ReadQueriesFromFile {
 
         return s;
     }
-    
-    
-    private RepositoryConnection getConnection(){
-         String endpointURL = "http://sparql.wikipathways.org/";
-        
-        //HTTPRepository sparqlEndpoint = new SPARQLRepository(endpointURL, "");
-        //sparqlEndpoint.initialize();
-
-        SPARQLRepository sparqlEndpoint = new SPARQLRepository(endpointURL, "");
-        sparqlEndpoint.initialize();
-        
-        RepositoryConnection conn = sparqlEndpoint.getConnection();
-        return conn;
-    }
-
     
 }

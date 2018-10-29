@@ -37,8 +37,9 @@ import java.util.List;
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.model.NamedQueryEntity;
 import nl.unimaas.ids.data2services.model.QueryVariable;
-import nl.unimaas.ids.data2services.service.ReadEntities;
+//import nl.unimaas.ids.data2services.service.ReadEntities;
 import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
+import nl.unimaas.ids.rdf2api.io.utils.Config;
 
 /**
  *
@@ -57,19 +58,34 @@ public class SwaggerTest {
     public Swagger doSwagger() {
 
         swagger = new Swagger();
+        
+        Config config = new Config();
+        
+        //test what happens without a property
+        String title = config.getProperty("title").orElse("");
+        String description = config.getProperty("description").orElse("");
+        String termsOfService = config.getProperty("termsOfService").orElse("");
+        String contactName = config.getProperty("contactName").orElse("");
+        String contactEmail = config.getProperty("contactEmail").orElse("");
+        String licenseName = config.getProperty("licenseName").orElse("");
+        String licenseURL = config.getProperty("licenseURL").orElse("");
+        
+        String host = config.getProperty("host").orElse("127.0.0.1:8080");
+        String basePath = config.getProperty("basePath").orElse("/");
 
+        
         swagger.info(new Info()
-                .title("Bio2RDF")
-                .description("Bio2RDF is an open source project to generate and provide linked data for the life sciences.")
-                .termsOfService("https://github.com/bio2rdf/bio2rdf-scripts/wiki/Terms-of-use")
-                .contact(new Contact().name("Michel Dumontier").email("michel.dumontier@gmail.com"))
-                .license(new License().name("MIT License")
-                        .url("https://github.com/bio2rdf/bio2rdf-scripts/blob/master/MIT-LICENSE.txt")
+                .title(title)
+                .description(description)
+                .termsOfService(termsOfService)
+                .contact(new Contact().name(contactName).email(contactEmail))
+                .license(new License().name(licenseName)
+                        .url(licenseURL)
                 )
-        ).host("localhost:8084")
-                .basePath("/data2services/rest/swag/")
+        ).host(host)
+                .basePath(basePath)
                 //.consumes("application/json").consumes("application/xml")
-                .produces("application/json").produces("application/xml");
+                .produces("application/json"); //.produces("application/xml");
         
                 
                 
@@ -94,18 +110,89 @@ public class SwaggerTest {
         return swagger;
     }
     
+    private void operationMetadataSources(){
+        String sPath = "/metadata/sources/";
+        String query = "";
+        String operationDescription = "test";
+        
+        ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
+
+        Operation operation = new Operation();
+        operation.description(operationDescription);
+
+        Path path = new Path();
+        path.setGet(operation);
+
+        swagger.path(sPath, path);
+    }
+    
+private void operationSource(){
+        String sPath = "/{source}/";
+        String query = "";
+        String operationDescription = "test";
+        
+        ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
+
+        PathParameter parameter1 = new PathParameter();
+        parameter1.setName("source");
+        parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+
+        parameter1.setEnum(readEntities.getEntities());
+        parameter1.setType("string"); //TODO should it be URL (check types)
+
+        parameter1.setDescription("parameter description");
+
+        parameter1.setIn("path");
+        
+
+        Operation operation = new Operation();
+        operation.description(operationDescription);
+        operation.addParameter(parameter1);
+
+        Path path = new Path();
+        path.setGet(operation);
+
+        swagger.path(sPath, path);
+    }
+    
     private void operationClass(){
             ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
 
-            List<IRIEntity> entityList = readEntities.getClassList();
+            List<IRIEntity> entityList;
+            entityList = readEntities.getClassList();
             
+            
+            PathParameter parameter1 = new PathParameter();
+            parameter1.setName("source");
+            parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+            
+            parameter1.setEnum(readEntities.getEntities());
+            parameter1.setType("string"); //TODO should it be URL (check types)
+            
+            parameter1.setDescription("parameter description");
+            
+            parameter1.setIn("path");
+            
+            PathParameter parameter2 = new PathParameter();
+            parameter2.setName("class");
+            parameter2.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+            
+            parameter2.setEnum(readEntities.getEntities());
+            parameter2.setType("string"); //TODO should it be URL (check types)
+            
+            parameter2.setDescription("parameter description");
+            
+            parameter2.setIn("path");
+
             Operation operation = new Operation();
+            operation.addParameter(parameter1);
+            operation.addParameter(parameter2);
             operation.description("operation description");
           
             Path path = new Path();
             path.setGet(operation);
             
-            swagger.path("/class/", path);
+            swagger.path("/{source}/{rdftype}", path);
     }
     
     private void operationSubjectList(){
@@ -149,22 +236,49 @@ public class SwaggerTest {
             parameter1.setDescription("parameter description");
             
             parameter1.setIn("path");
+            
+            PathParameter parameter2 = new PathParameter();
+            parameter2.setName("source");
+            parameter2.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+            
+            parameter2.setEnum(readEntities.getEntities());
+            parameter2.setType("string"); //TODO should it be URL (check types)
+            
+            parameter2.setDescription("parameter description");
+            
+            parameter2.setIn("path");
+            
+            PathParameter parameter3 = new PathParameter();
+            parameter3.setName("blid");
+            parameter3.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+            
+            parameter3.setEnum(readEntities.getEntities());
+            parameter3.setType("string"); //TODO should it be URL (check types)
+            
+            parameter3.setDescription("parameter description");
+            
+            parameter3.setIn("path");
 
             Operation operation = new Operation();
             operation.addParameter(parameter1);
+            operation.addParameter(parameter2);
+            operation.addParameter(parameter3);
             operation.description("operation description");
             
             Path path = new Path();
             path.setGet(operation);
             
-            swagger.path("/subject/{id}/", path);
+            swagger.path("/{source}/{rdftype}/{blid}/", path);
     }
     
     private void generateOperations(){
             
-            operationClass();
+            operationMetadataSources();
+            operationSource();
+            operationClass();            
             operationSubjectList();
             operationSubject();
+            
             //SharingHolder sharing2 = sharing().pathPrefix("/getItem").tag("getItem");
     }
     

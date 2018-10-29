@@ -23,23 +23,31 @@
  */
 package nl.unimaas.ids.data2services.controller;
 
+import static com.google.common.base.CharMatcher.is;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.PathSegment;
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromFile;
 import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
 import nl.unimaas.ids.data2services.util.SwaggerTest;
 import nl.unimaas.ids.data2services.util.SwaggerTest1;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.rdf4j.model.URI;
 import org.eclipse.rdf4j.model.impl.URIImpl;
 import static org.eclipse.rdf4j.model.vocabulary.DCTERMS.URI;
@@ -48,7 +56,7 @@ import static org.eclipse.rdf4j.model.vocabulary.DCTERMS.URI;
  *
  * @author nuno
  */
-@Path("/{fullPath}")
+@Path("/")
 public class BasicOperationsController
 {
     
@@ -70,10 +78,32 @@ public class BasicOperationsController
     }
     
     
+    // TODO finish
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/class")
+    @Path("/metadata/sources/")
     public List<IRIEntity> classList(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
+        List<IRIEntity>  list = new ArrayList<IRIEntity>();
+        
+        IRIEntity iriEntity = new IRIEntity();
+        iriEntity.setIRI("https://www.drugbank.ca/");
+        iriEntity.setLabel("drugbank");
+        list.add(iriEntity);
+                        
+        return list;
+    }
+    
+    /**
+     *
+     * @param source
+     * @param sClass
+     * @param request
+     * @return
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{source}/{class}")
+    public List<IRIEntity> classList2(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
         List<IRIEntity>  iriEntityList = this.readEntities.getClassList();
                         
         return iriEntityList;
@@ -103,7 +133,7 @@ public class BasicOperationsController
     
         @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/subject/{id}")
+    @Path("/{source}/{rdftype}/{blid}")
     public String subject(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
         String url = request.getRequestURL().toString();
         
@@ -122,6 +152,12 @@ public class BasicOperationsController
         return s;
     }
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/datasources")
+    public String datasources(){
+        return "";
+    }
     
     //generalize
     @GET
@@ -133,5 +169,21 @@ public class BasicOperationsController
         
         return s;
     }
+    
+ 
+    //allow method to be extended
+    @GET
+    @Path("{path:.*}")
+    public String genericPathHandler(@PathParam("path") List<PathSegment> segments) throws Exception {
+        String fullpath = "";
+                
+        
+        
+
+        return fullpath;
+    }
+    
+    
+    
 }
 
