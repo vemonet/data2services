@@ -28,7 +28,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
-public class HttpURLConnect {
+        public class HttpURLConnect {
     
     public static String GET = "GET";
     public static String POST= "POST";
@@ -112,23 +112,31 @@ public class HttpURLConnect {
     }
 
     // HTTP POST request
-    public void sendPost(String url, String bodyParameters) throws Exception {
+    public String sendPost(String url, String bodyParameters) throws Exception {
 
         //String url = "https://selfsolve.apple.com/wcResults.do";
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(url);
 
         // add header
-        //post.setHeader("User-Agent", USER_AGENT);
+        post.setHeader("User-Agent", USER_AGENT);
+        post.setHeader("Accept", "application/json");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        urlParameters.add(new BasicNameValuePair("sn", "C02G8416DRJM"));
-        urlParameters.add(new BasicNameValuePair("cn", ""));
-        urlParameters.add(new BasicNameValuePair("locale", ""));
-        urlParameters.add(new BasicNameValuePair("caller", ""));
-        urlParameters.add(new BasicNameValuePair("num", "12345"));
-
-        //new UrlEncodedFormEntity(urlParameters)
-        post.setEntity(new StringEntity(bodyParameters));
+        urlParameters.add(new BasicNameValuePair("query",bodyParameters));
+        urlParameters.add(new BasicNameValuePair("infer","true"));
+        urlParameters.add(new BasicNameValuePair("sameAs","true"));
+        urlParameters.add(new BasicNameValuePair("limit","1000"));
+        urlParameters.add(new BasicNameValuePair("offset","0"));
+        
+        //urlParameters.add(new BasicNameValuePair("sn", "C02G8416DRJM"));
+        //urlParameters.add(new BasicNameValuePair("cn", ""));
+        //urlParameters.add(new BasicNameValuePair("locale", ""));
+        //urlParameters.add(new BasicNameValuePair("caller", ""));
+        //urlParameters.add(new BasicNameValuePair("num", "12345"));
+         
+        UrlEncodedFormEntity urlEncodedFormEntity= new UrlEncodedFormEntity(urlParameters);
+        //post.setEntity(new StringEntity(bodyParameters));
+        post.setEntity(urlEncodedFormEntity);
 
         HttpResponse response = client.execute(post);
         System.out.println("\nSending 'POST' request to URL : " + url);
@@ -145,7 +153,9 @@ public class HttpURLConnect {
             result.append(line);
         }
 
-        System.out.println(result.toString());
+        System.out.println("-"+result.toString());
+        
+        return result.toString();
     }
 
     public String getContentType() {

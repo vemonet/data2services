@@ -37,7 +37,7 @@ import java.util.List;
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.model.NamedQueryEntity;
 import nl.unimaas.ids.data2services.model.QueryVariable;
-import nl.unimaas.ids.data2services.service.ReadEntities;
+//import nl.unimaas.ids.data2services.service.ReadEntities;
 import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
 
 /**

@@ -147,9 +147,10 @@ public class ReadEntitiesFromFile extends Entity /*implements ReadEntities*/{
     
 
     
+
     
     public  List<IRIEntity> getClassList(){
-            
+                
             List<IRIEntity> classList = new ArrayList();
             
             RepositoryConnection conn = getConnection();
@@ -158,17 +159,22 @@ public class ReadEntitiesFromFile extends Entity /*implements ReadEntities*/{
             //String queryString = "select ?Concept where {[] a "+entity.stringValue()+"}";
             String queryString = "select distinct ?Concept where {[] a ?Concept}";
             
+            
             TupleQuery query = conn.prepareTupleQuery(queryString);
             // A QueryResult is also an AutoCloseable resource, so make sure it gets
             // closed when done.
             
+            System.out.println( query.toString() );
+            
+            
             try (TupleQueryResult result = query.evaluate()) {
+                
                 // we just iterate over all solutions in the result...
                 while (result.hasNext()) {
                     BindingSet solution = result.next();
                     // ... and print out the value of the variable bindings
                     // for ?s and ?n
-                    System.out.println("?s = " + solution.getValue("Concept"));
+                    //System.out.println("?s = " + solution.getValue("Concept"));
                     //System.out.println("?n = " + solution.getValue("n"));
                     IRIEntity iriEntity = new IRIEntity();
                     

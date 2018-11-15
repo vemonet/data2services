@@ -1,4 +1,4 @@
-    /*
+/*
  * The MIT License
  *
  * Copyright 2018 nuno.
@@ -43,6 +43,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 import nl.unimaas.ids.data2services.model.IRIEntity;
+import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromFile;
 import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
 import nl.unimaas.ids.data2services.util.SwaggerTest;
@@ -57,42 +58,41 @@ import static org.eclipse.rdf4j.model.vocabulary.DCTERMS.URI;
  * @author nuno
  */
 @Path("/")
-public class BasicOperationsController
-{
-    
-    private ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
-    private ReadQueriesFromFile queries = new ReadQueriesFromFile();
-    
+public class BasicOperationsController {
+
+    //private ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
+    private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
+    //private ReadQueriesFromFile queries = new ReadQueriesFromFile();
+
     @GET
     @Path("/swag")
     public String swag(@Context HttpServletRequest request) {
         SwaggerTest swaggerTest = new SwaggerTest();
         return swaggerTest.getSwaggerJson();
     }
-    
+
     @GET
     @Path("/swag1")
     public String swag1(@Context HttpServletRequest request) {
         SwaggerTest1 swaggerTest1 = new SwaggerTest1();
         return swaggerTest1.getSwaggerJson();
     }
-    
-    
+
     // TODO finish
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/metadata/sources/")
     public List<IRIEntity> classList(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
-        List<IRIEntity>  list = new ArrayList<IRIEntity>();
-        
+        List<IRIEntity> list = new ArrayList<IRIEntity>();
+
         IRIEntity iriEntity = new IRIEntity();
         iriEntity.setIRI("https://www.drugbank.ca/");
         iriEntity.setLabel("drugbank");
         list.add(iriEntity);
-                        
+
         return list;
     }
-    
+
     /**
      *
      * @param source
@@ -103,87 +103,104 @@ public class BasicOperationsController
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{source}/{class}")
-    public List<IRIEntity> classList2(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
-        List<IRIEntity>  iriEntityList = this.readEntities.getClassList();
-                        
-        return iriEntityList;
+    public String classList2(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
+        String txt = this.readEntities.getClassList();
+
+        return txt;
     }
-    
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{source}/")
+    public String classListBySource(@PathParam("source") String source, @Context HttpServletRequest request) {
+        String txt = this.readEntities.getClassList();
+
+        return txt;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/subjectList/{classId}")
-    public List<IRIEntity> subjectList(@PathParam("classId") String classId, @Context HttpServletRequest request) {
-        
+    public String subjectList(@PathParam("classId") String classId, @Context HttpServletRequest request) {
+
         //String url = request.getRequestURL().toString();
         //URI uri = new URIImpl(url);
         //readEntities.getSubject(uri);
-        
         try {
-            classId = new String( Base64.getDecoder().decode(classId), "UTF-8");
+            classId = new String(Base64.getDecoder().decode(classId), "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         System.out.println(classId);
-        
-        List<IRIEntity> list = readEntities.getSubjectListByClass(new URIImpl(classId));
-                
-        return list;
+
+        String txt = "";
+        try {
+            txt = readEntities.getSubjectListByClass(new URIImpl(classId));
+        } catch (Exception ex) {
+            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return txt;
     }
-    
-        @GET
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{source}/{rdftype}/{blid}")
-    public String subject(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
+    public String subject(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) throws Exception {
         String url = request.getRequestURL().toString();
-        
+
         URI uri = new URIImpl(url);
-        
+
         readEntities.getSubject(uri);
-        
+
         try {
-            id = new String( Base64.getDecoder().decode(id), "UTF-8");
+            id = new String(Base64.getDecoder().decode(id), "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        String s  = readEntities.getSubject(new URIImpl(id));
-                
+
+        String s = "";
+        try {
+            s = readEntities.getSubject(new URIImpl(id));
+        } catch (Exception ex) {
+            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return s;
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/datasources")
-    public String datasources(){
+    public String datasources() {
         return "";
     }
-    
+
     //generalize
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/pathwayListBySpecies/{species}")
     public String genericMethod(@PathParam("species") String species, @Context HttpServletRequest request) {
         
-        String s = this.queries.executeQuery(species);
-        
+        String s = "";
+        //String s = this.queries.executeQuery(species);
+
         return s;
     }
-    
- 
+
     //allow method to be extended
     @GET
     @Path("{path:.*}")
     public String genericPathHandler(@PathParam("path") List<PathSegment> segments) throws Exception {
         String fullpath = "";
-                
-        
-        
+
+        for (PathSegment p : segments) {
+            System.out.println(p.getPath() + " > ");
+            fullpath += p.getPath() + " > ";
+        }
 
         return fullpath;
     }
-    
-    
-    
-}
 
+}
