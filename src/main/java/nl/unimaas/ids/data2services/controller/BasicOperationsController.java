@@ -43,7 +43,7 @@ import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 import nl.unimaas.ids.data2services.model.IRIEntity;
-import nl.unimaas.ids.data2services.registry.PathHandler;
+import nl.unimaas.ids.data2services.registry.AbstractPathHandler;
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
 import nl.unimaas.ids.data2services.registry.TestPathHandler;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
@@ -187,7 +187,7 @@ public class BasicOperationsController {
                 pathDomain = "/" + segments.get(i).getPath();
         }
 
-        PathHandler pathHandler = registryPathHandler.getHandler(pathDomain, path);
+        AbstractPathHandler pathHandler = registryPathHandler.getHandler(pathDomain, path);
         
         String result = pathHandler.process(path);
         
