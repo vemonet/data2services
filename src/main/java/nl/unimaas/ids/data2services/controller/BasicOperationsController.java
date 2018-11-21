@@ -43,6 +43,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 import nl.unimaas.ids.data2services.model.IRIEntity;
+import nl.unimaas.ids.data2services.registry.PathHandler;
+import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
+import nl.unimaas.ids.data2services.registry.TestPathHandler;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromFile;
 import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
@@ -60,14 +63,22 @@ import static org.eclipse.rdf4j.model.vocabulary.DCTERMS.URI;
 @Path("/")
 public class BasicOperationsController {
 
-    //private ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
+    RegistryPathHandler registryPathHandler;
+    SwaggerTest swaggerTest;
+             
     private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
     //private ReadQueriesFromFile queries = new ReadQueriesFromFile();
 
+    public BasicOperationsController(){
+        swaggerTest = SwaggerTest.getInstance();
+        
+        this.registryPathHandler = new RegistryPathHandler();
+        this.registryPathHandler.registerHandler(new TestPathHandler());
+    }
+    
     @GET
     @Path("/swag")
     public String swag(@Context HttpServletRequest request) {
-        SwaggerTest swaggerTest = new SwaggerTest();
         return swaggerTest.getSwaggerJson();
     }
 
@@ -193,14 +204,22 @@ public class BasicOperationsController {
     @GET
     @Path("{path:.*}")
     public String genericPathHandler(@PathParam("path") List<PathSegment> segments) throws Exception {
-        String fullpath = "";
+        
+        String pathDomain = "";
+        String path = ""; 
 
-        for (PathSegment p : segments) {
-            System.out.println(p.getPath() + " > ");
-            fullpath += p.getPath() + " > ";
+        for (int i = 0; i < segments.size(); i++) {
+            if(i!=0)
+                path += segments.get(i).getPath();
+            else
+                pathDomain = "/" + segments.get(i).getPath();
         }
 
-        return fullpath;
+        PathHandler pathHandler = this.registryPathHandler.getHandler(pathDomain, path);
+        
+        String result = pathHandler.process(path);
+        
+        return result;
     }
 
 }

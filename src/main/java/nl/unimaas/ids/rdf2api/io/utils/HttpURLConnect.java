@@ -120,7 +120,7 @@ import org.apache.http.message.BasicNameValuePair;
 
         // add header
         post.setHeader("User-Agent", USER_AGENT);
-        post.setHeader("Accept", "application/json");
+        post.setHeader("Accept", "application/sparql-results+json,*/*;q=0.9");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("query",bodyParameters));
         urlParameters.add(new BasicNameValuePair("infer","true"));

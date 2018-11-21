@@ -46,17 +46,21 @@ import nl.unimaas.ids.rdf2api.io.utils.Config;
  * @author nuno
  */
 public class SwaggerTest {
+    
+    private static SwaggerTest singleton = new SwaggerTest();
+    
     private Swagger swagger;
      
     public static void main(String[] args) {
         new SwaggerTest().doSwagger();
     }
 
-    public SwaggerTest() {
+    private SwaggerTest() {
+        doSwagger();
     }
 
-    public Swagger doSwagger() {
-
+    public Swagger doSwagger() { 
+        
         swagger = new Swagger();
         
         Config config = new Config();
@@ -86,11 +90,6 @@ public class SwaggerTest {
                 .basePath(basePath)
                 //.consumes("application/json").consumes("application/xml")
                 .produces("application/json"); //.produces("application/xml");
-        
-                
-                
-        
-
         
 //.securityDefinition("api_key", apiKeyAuth("api_key", In.HEADER))
         //.securityDefinition("petstore_auth", oAuth2()
@@ -143,8 +142,7 @@ private void operationSource(){
         parameter1.setDescription("parameter description");
 
         parameter1.setIn("path");
-        
-
+       
         Operation operation = new Operation();
         operation.description(operationDescription);
         operation.addParameter(parameter1);
@@ -322,13 +320,55 @@ private void operationSource(){
         
         Path path = new Path();
         path.setGet(operation);
-        this.swagger.path(sPath, path);
+        //this.swagger.path(sPath, path);
         
     }
     
+    public void registerOperation(String domain, String sPath){
+     
+         sPath = "/{source}/{rdftype}/{blid}/";
+         
+         String[] pathSegments = sPath.split("/");
+         
+         //String[] pathSegments = (sPath.charAt(0) == '/' ? sPath.substring(1) : sPath).split("/");        
+         
+         Operation operation = new Operation();
+         
+         for(String pathSegment : pathSegments){
+             if(isParameter(pathSegment)){
+                 
+                PathParameter parameter = new PathParameter();
+                parameter.setName(pathSegment);
+                parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
+
+                //parameter.setEnum(readEntities.getEntities());
+                parameter.setType("string"); //TODO should it be URL (check types)
+                parameter.setDescription("parameter description");
+                parameter.setIn("path");
+                
+                operation.addParameter(parameter);
+             };
+ 
+            Path path = new Path();
+            path.setGet(operation);
+                   
+            swagger.path(sPath, path);
+         }
+    }
+    
     public String getSwaggerJson(){
-               String jsonOutput = Json.pretty(doSwagger());
+               String jsonOutput = Json.pretty(this.swagger);
                return jsonOutput;
     }
+
+    private boolean isParameter(String pathSegment) {
+       System.out.println(pathSegment);
+       // create logic
+       return true;
+    }
+    
+   public static SwaggerTest getInstance( ) {
+      return singleton;
+   }
 
 }
