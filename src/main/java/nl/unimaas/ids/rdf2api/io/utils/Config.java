@@ -27,7 +27,7 @@ package nl.unimaas.ids.rdf2api.io.utils;
  *
  * @author nuno
  */
-import java.util.*;
+import java.util.Optional;
 import java.util.Properties;
 
 public class Config {

@@ -25,6 +25,7 @@ package nl.unimaas.ids.data2services.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import nl.unimaas.ids.data2services.model.DataSource;
 
 /**
@@ -34,7 +35,7 @@ import nl.unimaas.ids.data2services.model.DataSource;
 public class DataSourceService {
         
     public List<DataSource> getDataSources(){
-        List<DataSource> dataSourceList = new ArrayList();
+        List<DataSource> dataSourceList = new ArrayList<DataSource>();
         
         DataSource dataSource1 = new DataSource();
         dataSource1.setID("dataset1");

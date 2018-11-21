@@ -6,6 +6,7 @@
 package nl.unimaas.ids.data2services.config;
 
 import java.io.IOException;
+
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;

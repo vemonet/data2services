@@ -5,7 +5,6 @@
  */
 package nl.unimaas.ids.data2services.registry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ import java.util.Map;
  */
 public class RegistryPathHandler {
     
-    Map<String, PathHandler> phMap = new HashMap();
+    Map<String, PathHandler> phMap = new HashMap<String, PathHandler>();
     
     
     public void registerHandler(PathHandler ph){

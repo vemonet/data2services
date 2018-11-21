@@ -23,57 +23,43 @@
  */
 package nl.unimaas.ids.data2services.controller;
 
-import static com.google.common.base.CharMatcher.is;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
-import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
+
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.registry.PathHandler;
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
 import nl.unimaas.ids.data2services.registry.TestPathHandler;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
-import nl.unimaas.ids.data2services.service.ReadEntitiesFromFile;
-import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
 import nl.unimaas.ids.data2services.util.SwaggerTest;
-import nl.unimaas.ids.data2services.util.SwaggerTest1;
-import org.apache.commons.io.IOUtils;
-import org.eclipse.rdf4j.model.URI;
-import org.eclipse.rdf4j.model.impl.URIImpl;
-import static org.eclipse.rdf4j.model.vocabulary.DCTERMS.URI;
 
-/**
- *
- * @author nuno
- */
 @Path("/")
 public class BasicOperationsController {
-
-    RegistryPathHandler registryPathHandler;
-    SwaggerTest swaggerTest;
-             
+    private RegistryPathHandler registryPathHandler;
+    private SwaggerTest swaggerTest;
     private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
-    //private ReadQueriesFromFile queries = new ReadQueriesFromFile();
 
     public BasicOperationsController(){
         swaggerTest = SwaggerTest.getInstance();
         
-        this.registryPathHandler = new RegistryPathHandler();
-        this.registryPathHandler.registerHandler(new TestPathHandler());
+        registryPathHandler = new RegistryPathHandler();
+        registryPathHandler.registerHandler(new TestPathHandler());
     }
     
     @GET
@@ -82,14 +68,7 @@ public class BasicOperationsController {
         return swaggerTest.getSwaggerJson();
     }
 
-    @GET
-    @Path("/swag1")
-    public String swag1(@Context HttpServletRequest request) {
-        SwaggerTest1 swaggerTest1 = new SwaggerTest1();
-        return swaggerTest1.getSwaggerJson();
-    }
-
-    // TODO finish
+    // TODO: finish
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/metadata/sources/")
@@ -104,20 +83,13 @@ public class BasicOperationsController {
         return list;
     }
 
-    /**
-     *
-     * @param source
-     * @param sClass
-     * @param request
-     * @return
-     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{source}/{class}")
-    public String classList2(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
-        String txt = this.readEntities.getClassList();
+    public String getClassesForSource(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
+        String classList = readEntities.getClassList();
 
-        return txt;
+        return classList;
     }
 
     @GET
@@ -147,7 +119,7 @@ public class BasicOperationsController {
 
         String txt = "";
         try {
-            txt = readEntities.getSubjectListByClass(new URIImpl(classId));
+            txt = readEntities.getSubjectListByClass(SimpleValueFactory.getInstance().createIRI(classId));
         } catch (Exception ex) {
             Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -161,7 +133,7 @@ public class BasicOperationsController {
     public String subject(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) throws Exception {
         String url = request.getRequestURL().toString();
 
-        URI uri = new URIImpl(url);
+        IRI uri = SimpleValueFactory.getInstance().createIRI(url);
 
         readEntities.getSubject(uri);
 
@@ -173,7 +145,7 @@ public class BasicOperationsController {
 
         String s = "";
         try {
-            s = readEntities.getSubject(new URIImpl(id));
+            s = readEntities.getSubject(SimpleValueFactory.getInstance().createIRI(id));
         } catch (Exception ex) {
             Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -185,7 +157,7 @@ public class BasicOperationsController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/datasources")
     public String datasources() {
-        return "";
+        return readEntities.getSources();
     }
 
     //generalize
@@ -215,7 +187,7 @@ public class BasicOperationsController {
                 pathDomain = "/" + segments.get(i).getPath();
         }
 
-        PathHandler pathHandler = this.registryPathHandler.getHandler(pathDomain, path);
+        PathHandler pathHandler = registryPathHandler.getHandler(pathDomain, path);
         
         String result = pathHandler.process(path);
         

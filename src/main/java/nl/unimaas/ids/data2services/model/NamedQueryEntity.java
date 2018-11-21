@@ -25,7 +25,6 @@ package nl.unimaas.ids.data2services.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.rdf4j.model.IRI;
 
 /**
  *
@@ -33,7 +32,7 @@ import org.eclipse.rdf4j.model.IRI;
  */
 public class NamedQueryEntity extends Entity {
     private String query = "";    
-    private List<QueryVariable> variableList = new ArrayList(); 
+    private List<QueryVariable> variableList = new ArrayList<QueryVariable>(); 
     
     /**
      * @return the query
