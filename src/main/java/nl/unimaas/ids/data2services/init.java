@@ -1,3 +1,5 @@
+package nl.unimaas.ids.data2services;
+
 /*
  * The MIT License
  *

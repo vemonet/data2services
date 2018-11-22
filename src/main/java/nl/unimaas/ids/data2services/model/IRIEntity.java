@@ -31,30 +31,18 @@ public class IRIEntity extends Entity {
     private String IRI;
     private String label;
 
-    /**
-     * @return the IRI
-     */
     public String getIRI() {
         return IRI;
     }
 
-    /**
-     * @param IRI the IRI to set
-     */
     public void setIRI(String IRI) {
         this.IRI = IRI;
     }
 
-    /**
-     * @return the label
-     */
     public String getLabel() {
         return label;
     }
 
-    /**
-     * @param label the label to set
-     */
     public void setLabel(String label) {
         this.label = label;
     }

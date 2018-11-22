@@ -27,16 +27,18 @@
  */
 package nl.unimaas.ids.rdf2api.io.utils;
 
-import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 //import nl.dtl.fairmetadata4j.io.MetadataParserException;
 //import org.apache.logging.log4j.LogManager;
 import org.eclipse.rdf4j.model.IRI;
@@ -51,6 +53,10 @@ import org.eclipse.rdf4j.rio.RDFParseException;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
+import com.google.common.collect.ImmutableList;
+
+import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
+
 /**
  * Utils class for manipulating rdf statements
  * 
@@ -59,7 +65,8 @@ import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
  * @since 2016-09-06
  * @version 0.1
  */
-public class RDFUtils {   
+public class RDFUtils {
+	private static final Logger logger = Logger.getLogger(ReadEntitiesFromEndPoint.class.getName());
 
 //    private static final org.apache.logging.log4j.Logger LOGGER
 //            = LogManager.getLogger(RDFUtils.class);
@@ -107,13 +114,9 @@ public class RDFUtils {
             Iterator<Statement> it = model.iterator();
             List<Statement> statements = ImmutableList.copyOf(it);
             return statements;
-        } catch (RDFParseException | UnsupportedRDFormatException | 
-                IOException ex) {
-            String errMsg = "Error reading dataset metadata content"
-                    + ex.getMessage();
-            //LOGGER.error(errMsg);
-            //throw (new MetadataParserException(errMsg));
-            throw new Exception("");
+        } catch (RDFParseException | UnsupportedRDFormatException | IOException ex) {
+            logger.severe("Error reading dataset metadata content" + ex.getMessage());
+            throw new Exception(ex);
         }
     }
     

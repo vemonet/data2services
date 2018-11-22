@@ -1,21 +1,13 @@
 package nl.unimaas.ids.rdf2api.io.utils;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -24,7 +16,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -61,8 +52,6 @@ import org.apache.http.message.BasicNameValuePair;
     }
     
     public InputStream openInputStream(String url, String method) throws IOException, Exception{
-        HttpClient client = new DefaultHttpClient();
-     
         if(method.equals(HttpURLConnect.GET)){
             openGetConnection(url);
         } else
@@ -76,7 +65,6 @@ import org.apache.http.message.BasicNameValuePair;
         }
         
          return response.getEntity().getContent();
-        
     }
 
     /**
@@ -190,7 +178,7 @@ import org.apache.http.message.BasicNameValuePair;
     }
     
     private void openGetConnection(String url) throws IOException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(url);
         
         request.addHeader("Connection", "close");
@@ -201,13 +189,5 @@ import org.apache.http.message.BasicNameValuePair;
         System.out.println("Response Code : "
                 + response.getStatusLine().getStatusCode());
     }
-
-    //public void setRequestBody(String requestBody) {
-    //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    //}
-
-   // public void setRequestBody(String requestBody) {
-    //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    //}
 
 }

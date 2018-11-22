@@ -23,32 +23,22 @@
  */
 package nl.unimaas.ids.data2services.util;
 
-import nl.unimaas.ids.data2services.service.ReadEntitiesFromFile;
 import io.swagger.models.Contact;
 import io.swagger.models.Info;
 import io.swagger.models.License;
 import io.swagger.models.Operation;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
-import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
-import java.util.List;
-import nl.unimaas.ids.data2services.model.IRIEntity;
-import nl.unimaas.ids.data2services.model.NamedQueryEntity;
-import nl.unimaas.ids.data2services.model.QueryVariable;
-//import nl.unimaas.ids.data2services.service.ReadEntities;
-import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
 import nl.unimaas.ids.rdf2api.io.utils.Config;
 
-/**
+/**s
  *
  * @author nuno
  */
 public class SwaggerTest {
-    
     private static SwaggerTest singleton = new SwaggerTest();
-    
     private Swagger swagger;
      
     public static void main(String[] args) {
@@ -104,18 +94,14 @@ public class SwaggerTest {
         //);
 
         generateOperations();
-        generateQueryOperations();
         
         return swagger;
     }
     
     private void operationMetadataSources(){
         String sPath = "/metadata/sources/";
-        String query = "";
         String operationDescription = "test";
         
-        ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
-
         Operation operation = new Operation();
         operation.description(operationDescription);
 
@@ -127,17 +113,11 @@ public class SwaggerTest {
     
 private void operationSource(){
         String sPath = "/{source}/";
-        String query = "";
         String operationDescription = "test";
         
-        ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
-
         PathParameter parameter1 = new PathParameter();
         parameter1.setName("source");
         parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-
-        parameter1.setEnum(readEntities.getEntities());
-        parameter1.setType("string"); //TODO should it be URL (check types)
 
         parameter1.setDescription("parameter description");
 
@@ -154,18 +134,9 @@ private void operationSource(){
     }
     
     private void operationClass(){
-            ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
-
-            List<IRIEntity> entityList;
-            entityList = readEntities.getClassList();
-            
-            
             PathParameter parameter1 = new PathParameter();
             parameter1.setName("source");
             parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-            
-            parameter1.setEnum(readEntities.getEntities());
-            parameter1.setType("string"); //TODO should it be URL (check types)
             
             parameter1.setDescription("parameter description");
             
@@ -174,9 +145,6 @@ private void operationSource(){
             PathParameter parameter2 = new PathParameter();
             parameter2.setName("class");
             parameter2.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-            
-            parameter2.setEnum(readEntities.getEntities());
-            parameter2.setType("string"); //TODO should it be URL (check types)
             
             parameter2.setDescription("parameter description");
             
@@ -194,16 +162,9 @@ private void operationSource(){
     }
     
     private void operationSubjectList(){
-            ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
-
-            List<IRIEntity> entityList = readEntities.getClassList();
-        
             PathParameter parameter1 = new PathParameter();
             parameter1.setName("subjectClass");
             parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-            
-            parameter1.setEnum(readEntities.getEntities());
-            parameter1.setType("string"); //TODO should it be URL (check types)
             
             parameter1.setDescription("parameter description");
             
@@ -220,16 +181,9 @@ private void operationSource(){
     }
     
     private void operationSubject(){
-            ReadEntitiesFromFile readEntities = new ReadEntitiesFromFile();
-
-            List<IRIEntity> entityList = readEntities.getClassList();
-        
             PathParameter parameter1 = new PathParameter();
             parameter1.setName("id");
             parameter1.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-            
-            parameter1.setEnum(readEntities.getEntities());
-            parameter1.setType("string"); //TODO should it be URL (check types)
             
             parameter1.setDescription("parameter description");
             
@@ -239,9 +193,6 @@ private void operationSource(){
             parameter2.setName("source");
             parameter2.setRequired(true); //TODO think about this (should it be empty and list entiies)?
             
-            parameter2.setEnum(readEntities.getEntities());
-            parameter2.setType("string"); //TODO should it be URL (check types)
-            
             parameter2.setDescription("parameter description");
             
             parameter2.setIn("path");
@@ -249,9 +200,6 @@ private void operationSource(){
             PathParameter parameter3 = new PathParameter();
             parameter3.setName("blid");
             parameter3.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-            
-            parameter3.setEnum(readEntities.getEntities());
-            parameter3.setType("string"); //TODO should it be URL (check types)
             
             parameter3.setDescription("parameter description");
             
@@ -282,47 +230,47 @@ private void operationSource(){
     
     
     
-    private void generateQueryOperations(){
-        ReadQueriesFromFile readQueriesFromFile = new ReadQueriesFromFile();
-        List<NamedQueryEntity> namedQueryList = readQueriesFromFile.getNamedQueryList();
-    
-       // System.out.println(namedQueryList.);
-        
-        Operation operation = new Operation();
-        
-        String sPath = "/pathwayListBySpecies/";
-        
-        for(NamedQueryEntity nqe : namedQueryList){
-            List<QueryVariable> variableList = nqe.getVariableList();
-            
-            for(QueryVariable queryVariable : variableList){
-                
-                PathParameter parameter = new PathParameter();
-                parameter.setName( queryVariable.getLabel() );
-                parameter.setRequired(true); //TODO think about this (should it be empty and list entiies)?
-
-                //parameter.setEnum(readEntities.getEntities());
-                parameter.setType("string"); 
-
-                parameter.setDescription("parameter description");
-
-                parameter.setIn("path");
-                
-                operation.addParameter(parameter);
-                
-                 
-                sPath += "{"+queryVariable.getLabel()+"}/" ;
-            }
-            
-
-                  
-        }
-        
-        Path path = new Path();
-        path.setGet(operation);
-        //this.swagger.path(sPath, path);
-        
-    }
+//    private void generateQueryOperations(){
+//        ReadQueriesFromFile readQueriesFromFile = new ReadQueriesFromFile();
+//        List<NamedQueryEntity> namedQueryList = readQueriesFromFile.getNamedQueryList();
+//    
+//       // System.out.println(namedQueryList.);
+//        
+//        Operation operation = new Operation();
+//        
+//        String sPath = "/pathwayListBySpecies/";
+//        
+//        for(NamedQueryEntity nqe : namedQueryList){
+//            List<QueryVariable> variableList = nqe.getVariableList();
+//            
+//            for(QueryVariable queryVariable : variableList){
+//                
+//                PathParameter parameter = new PathParameter();
+//                parameter.setName( queryVariable.getLabel() );
+//                parameter.setRequired(true); //TODO think about this (should it be empty and list entiies)?
+//
+//                //parameter.setEnum(readEntities.getEntities());
+//                parameter.setType("string"); 
+//
+//                parameter.setDescription("parameter description");
+//
+//                parameter.setIn("path");
+//                
+//                operation.addParameter(parameter);
+//                
+//                 
+//                sPath += "{"+queryVariable.getLabel()+"}/" ;
+//            }
+//            
+//
+//                  
+//        }
+//        
+//        Path path = new Path();
+//        path.setGet(operation);
+//        //this.swagger.path(sPath, path);
+//        
+//    }
     
     public void registerOperation(String domain, String sPath){
      
@@ -352,7 +300,7 @@ private void operationSource(){
             Path path = new Path();
             path.setGet(operation);
                    
-            swagger.path(sPath, path);
+//            swagger.path(sPath, path);
          }
     }
     
