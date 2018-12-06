@@ -74,6 +74,7 @@ public class BasicOperationsController {
         
         this.registryPathHandler = new RegistryPathHandler();
         this.registryPathHandler.registerHandler(new TestPathHandler());
+        
     }
     
     @GET

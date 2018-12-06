@@ -37,6 +37,7 @@ import java.util.List;
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.model.NamedQueryEntity;
 import nl.unimaas.ids.data2services.model.QueryVariable;
+import nl.unimaas.ids.data2services.model.ServiceDomain;
 //import nl.unimaas.ids.data2services.service.ReadEntities;
 import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
 import nl.unimaas.ids.rdf2api.io.utils.Config;
@@ -55,7 +56,7 @@ public class SwaggerTest {
         new SwaggerTest().doSwagger();
     }
 
-    private SwaggerTest() {
+    public SwaggerTest() {
         doSwagger();
     }
 
@@ -103,8 +104,8 @@ public class SwaggerTest {
         //        .externalDocs(externalDocs().description("Find out more about our store").url("http://swagger.io"))
         //);
 
-        generateOperations();
-        generateQueryOperations();
+        //generateOperations();
+        //generateQueryOperations();
         
         return swagger;
     }
@@ -324,9 +325,8 @@ private void operationSource(){
         
     }
     
-    public void registerOperation(String domain, String sPath){
-     
-         sPath = "/{source}/{rdftype}/{blid}/";
+    public void registerOperation(ServiceDomain serviceDomain, String sPath){
+        
          
          String[] pathSegments = sPath.split("/");
          
@@ -335,25 +335,27 @@ private void operationSource(){
          Operation operation = new Operation();
          
          for(String pathSegment : pathSegments){
-             if(isParameter(pathSegment)){
+                if(true /*sParameter(pathSegment)*/){
                  
-                PathParameter parameter = new PathParameter();
-                parameter.setName(pathSegment);
-                parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
+                    PathParameter parameter = new PathParameter();
+                    parameter.setName(pathSegment);
+                    parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
 
-                //parameter.setEnum(readEntities.getEntities());
-                parameter.setType("string"); //TODO should it be URL (check types)
-                parameter.setDescription("parameter description");
-                parameter.setIn("path");
-                
-                operation.addParameter(parameter);
+                    //parameter.setEnum(readEntities.getEntities());
+                    parameter.setType("string"); //TODO should it be URL (check types)
+                    parameter.setDescription("parameter description");
+                    parameter.setIn("path");
+
+                    operation.addParameter(parameter);
+                }
              };
- 
+              
             Path path = new Path();
             path.setGet(operation);
-                   
+            
+                //if(true) return;
+            
             swagger.path(sPath, path);
-         }
     }
     
     public String getSwaggerJson(){
@@ -367,8 +369,8 @@ private void operationSource(){
        return true;
     }
     
-   public static SwaggerTest getInstance( ) {
-      return singleton;
-   }
+    public static SwaggerTest getInstance() {
+       return singleton;
+    }
 
 }

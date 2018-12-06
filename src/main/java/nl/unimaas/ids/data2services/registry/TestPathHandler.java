@@ -13,7 +13,7 @@ public class TestPathHandler extends PathHandler{
     
     public TestPathHandler(){
         this.setDomain("test");
-        this.setPathHandlerModel("/{test}/{test2}/{test3}");
+        this.setPathHandlerModel("/{testx}/{test2}/{test3}");
         setupSwaggerOperation();
     }
     
