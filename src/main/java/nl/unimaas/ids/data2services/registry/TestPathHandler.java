@@ -9,7 +9,7 @@ package nl.unimaas.ids.data2services.registry;
  *
  * @author nuno
  */
-public class TestPathHandler extends PathHandler{
+public class TestPathHandler extends AbstractPathHandler{
     
     public TestPathHandler(){
         this.setDomain("test");

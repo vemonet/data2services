@@ -13,7 +13,7 @@ import nl.unimaas.ids.data2services.util.SwaggerTest;
  *
  * @author nuno
  */
-public abstract class PathHandler {
+public abstract class AbstractPathHandler {
     
     private ServiceDomain domain = new ServiceDomain();
     private String pathHandlerModel = "";
