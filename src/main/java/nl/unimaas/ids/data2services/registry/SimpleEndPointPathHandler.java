@@ -5,13 +5,16 @@
  */
 package nl.unimaas.ids.data2services.registry;
 
+import nl.unimaas.ids.data2services.model.ServiceDomain;
+
 /**
  *
  * @author nuno
  */
-public class SimpleEndPointPathHandler extends PathHandler{
+public class SimpleEndPointPathHandler extends AbstractPathHandler{
+    
     public SimpleEndPointPathHandler(){
-        this.setDomain("test");
+        this.setServiceDomain(new ServiceDomain("test"));
         this.setPathHandlerModel("/{testx}/{test2}/{test3}");
         setupSwaggerOperation();
     }

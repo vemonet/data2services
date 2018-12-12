@@ -31,16 +31,9 @@ import io.swagger.models.Path;
 import io.swagger.models.Swagger;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
-<<<<<<< HEAD
 import java.util.List;
 import nl.unimaas.ids.data2services.model.IRIEntity;
-import nl.unimaas.ids.data2services.model.NamedQueryEntity;
-import nl.unimaas.ids.data2services.model.QueryVariable;
 import nl.unimaas.ids.data2services.model.ServiceDomain;
-//import nl.unimaas.ids.data2services.service.ReadEntities;
-import nl.unimaas.ids.data2services.service.ReadQueriesFromFile;
-=======
->>>>>>> 84c258e32c9a0678d2375281afeef5cbeb08c52a
 import nl.unimaas.ids.rdf2api.io.utils.Config;
 
 /**s
@@ -103,12 +96,11 @@ public class SwaggerTest {
         //        .externalDocs(externalDocs().description("Find out more about our store").url("http://swagger.io"))
         //);
 
-<<<<<<< HEAD
-        //generateOperations();
-        //generateQueryOperations();
-=======
+        
         generateOperations();
->>>>>>> 84c258e32c9a0678d2375281afeef5cbeb08c52a
+        //generateQueryOperations();
+        generateOperations();
+
         
         return swagger;
     }
@@ -318,8 +310,6 @@ private void operationSource(){
                    
 //            swagger.path(sPath, path);
          }
-
-    }
     
     public String getSwaggerJson(){
                String jsonOutput = Json.pretty(this.swagger);
