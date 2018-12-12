@@ -1,6 +1,6 @@
 package nl.unimaas.ids.data2services.registry;
 
-import nl.unimaas.ids.data2services.model.ServiceDomain;
+import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.data2services.util.SwaggerTest;
 
 /*
@@ -15,15 +15,15 @@ import nl.unimaas.ids.data2services.util.SwaggerTest;
  */
 public abstract class AbstractPathHandler {
     
-    private ServiceDomain domain = new ServiceDomain();
+    private ServiceRealm domain = new ServiceRealm();
     private String pathHandlerModel = "";
     
     
-    public void setServiceDomain(ServiceDomain serviceDomain){
+    public void setServiceRealm(ServiceRealm serviceDomain){
         this.domain = domain;
     }
     
-    public ServiceDomain getServiceDomain(){
+    public ServiceRealm getServiceRealm(){
         return domain;
     }
     

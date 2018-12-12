@@ -7,6 +7,7 @@ package nl.unimaas.ids.data2services.registry;
 
 import java.util.HashMap;
 import java.util.Map;
+import nl.unimaas.ids.data2services.model.ServiceRealm;
 
 /**
  *
@@ -14,12 +15,12 @@ import java.util.Map;
  */
 public class RegistryPathHandler {
     
-    Map<String, AbstractPathHandler> phMap = new HashMap<String, AbstractPathHandler>();
+    Map<ServiceRealm, AbstractPathHandler> phMap = new HashMap<ServiceRealm, AbstractPathHandler>();
     
     
     public void registerHandler(AbstractPathHandler ph){
-        String domain = ph.getDomain();
-        phMap.put(domain, ph);
+        ServiceRealm realm = ph.getServiceRealm();
+        phMap.put(realm, ph);
     }
         
     public AbstractPathHandler getHandler(String domain, String path){

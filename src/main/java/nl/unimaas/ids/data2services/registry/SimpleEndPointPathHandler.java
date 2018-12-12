@@ -5,7 +5,7 @@
  */
 package nl.unimaas.ids.data2services.registry;
 
-import nl.unimaas.ids.data2services.model.ServiceDomain;
+import nl.unimaas.ids.data2services.model.ServiceRealm;
 
 /**
  *
@@ -14,7 +14,7 @@ import nl.unimaas.ids.data2services.model.ServiceDomain;
 public class SimpleEndPointPathHandler extends AbstractPathHandler{
     
     public SimpleEndPointPathHandler(){
-        this.setServiceDomain(new ServiceDomain("test"));
+        this.setServiceRealm(new ServiceRealm("test"));
         this.setPathHandlerModel("/{testx}/{test2}/{test3}");
         setupSwaggerOperation();
     }

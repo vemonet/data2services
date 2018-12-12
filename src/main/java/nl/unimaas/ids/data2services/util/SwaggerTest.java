@@ -33,7 +33,7 @@ import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
 import java.util.List;
 import nl.unimaas.ids.data2services.model.IRIEntity;
-import nl.unimaas.ids.data2services.model.ServiceDomain;
+import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.rdf2api.io.utils.Config;
 
 /**s
@@ -279,7 +279,7 @@ private void operationSource(){
 //        
 //    }
     
-    public void registerOperation(ServiceDomain serviceDomain, String sPath){
+    public void registerOperation(ServiceRealm serviceDomain, String sPath){
         
          
          String[] pathSegments = sPath.split("/");
