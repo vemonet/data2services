@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -38,6 +39,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
+import javax.ws.rs.core.Response;
 
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
@@ -61,6 +63,18 @@ public class BasicOperationsController {
         registryPathHandler = new RegistryPathHandler();
         registryPathHandler.registerHandler(new TestPathHandler());
     }
+    
+    
+    @GET
+    @Path("/")
+    public void swag(@Context HttpServletRequest request, HttpServletResponse resp) {
+        
+        resp.setHeader("refresh","1;https://www.google.com/");
+        //return swaggerTest.getSwaggerJson();
+        
+        return;
+    }
+
     
     @GET
     @Path("/swag")
