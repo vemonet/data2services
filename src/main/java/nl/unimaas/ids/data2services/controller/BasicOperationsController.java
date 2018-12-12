@@ -64,22 +64,20 @@ public class BasicOperationsController {
         registryPathHandler.registerHandler(new TestPathHandler());
     }
     
-    
-    @GET
-    @Path("/")
-    public void swag(@Context HttpServletRequest request, HttpServletResponse resp) {
-        
-        resp.setHeader("refresh","1;https://www.google.com/");
-        //return swaggerTest.getSwaggerJson();
-        
-        return;
-    }
-
-    
     @GET
     @Path("/swag")
     public String swag(@Context HttpServletRequest request) {
         return swaggerTest.getSwaggerJson();
+    }
+    
+    @GET
+    @Path("/")   
+    public String a(@Context HttpServletRequest request, @Context HttpServletResponse response) {
+        
+        response.setHeader("refresh","0;https://www.google.com/");
+        //return swaggerTest.getSwaggerJson();
+        
+        return "x";
     }
 
     // TODO: finish
@@ -189,7 +187,14 @@ public class BasicOperationsController {
     //allow method to be extended
     @GET
     @Path("{path:.*}")
-    public String genericPathHandler(@PathParam("path") List<PathSegment> segments) throws Exception {
+    public String genericPathHandler(@PathParam("path") List<PathSegment> segments, @Context HttpServletResponse response) throws Exception {
+        
+        
+        if(segments.size()==1){
+            response.setHeader("refresh","0; ../webjars/swagger-ui/3.19.0/?url=http://localhost:8084/data2services/rest/swag");
+            //return swaggerTest.getSwaggerJson();
+            return "";
+        }
         
         String pathDomain = "";
         String path = ""; 
