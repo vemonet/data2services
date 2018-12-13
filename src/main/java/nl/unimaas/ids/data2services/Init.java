@@ -28,6 +28,6 @@ package nl.unimaas.ids.data2services;
  *
  * @author nuno
  */
-public class init {
+public class Init {
     
 }

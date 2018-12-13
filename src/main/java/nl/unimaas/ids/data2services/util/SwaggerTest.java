@@ -167,6 +167,8 @@ public class SwaggerTest {
             operation.addParameter(parameter1);
             operation.addParameter(parameter2);
             operation.description("operation description");
+            
+            operation.addResponse("200", new Response());
           
             Path path = new Path();
             path.setGet(operation);
@@ -306,7 +308,7 @@ public class SwaggerTest {
 
                     operation.addParameter(parameter);
                 }
-             };
+             }
               
             Path path = new Path();
             path.setGet(operation);
