@@ -80,19 +80,12 @@ public class BasicOperationsController {
         return "x";
     }
 
-    // TODO: finish
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/metadata/sources/")
-    public List<IRIEntity> classList(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
-        List<IRIEntity> list = new ArrayList<IRIEntity>();
-
-        IRIEntity iriEntity = new IRIEntity();
-        iriEntity.setIRI("https://www.drugbank.ca/");
-        iriEntity.setLabel("drugbank");
-        list.add(iriEntity);
-
-        return list;
+    public String metadataSources(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
+        
+        return readEntities.metadataSources();
     }
 
     @GET
@@ -196,17 +189,17 @@ public class BasicOperationsController {
             return "";
         }
         
-        String pathDomain = "";
+        String serviceRealm = "";
         String path = ""; 
 
         for (int i = 0; i < segments.size(); i++) {
             if(i!=0)
                 path += segments.get(i).getPath();
             else
-                pathDomain = "/" + segments.get(i).getPath();
+                serviceRealm = "/" + segments.get(i).getPath();
         }
 
-        AbstractPathHandler pathHandler = registryPathHandler.getHandler(pathDomain, path);
+        AbstractPathHandler pathHandler = registryPathHandler.getHandler(serviceRealm, path);
         
         String result = pathHandler.process(path);
         
