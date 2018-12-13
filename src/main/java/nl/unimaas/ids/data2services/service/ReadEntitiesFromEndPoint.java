@@ -199,8 +199,8 @@ public class ReadEntitiesFromEndPoint {
                                 "                [] a ?class .\n" +
                                 "            }\n" +
                                 "            # Should be a variable (source)\n" +
-                //<http://data2services/biolink/drugbank>
-                //%3Chttp%3A//data2services/biolink/drugbank%3E
+                                //<http://data2services/biolink/drugbank>
+                                //%3Chttp%3A//data2services/biolink/drugbank%3E
                                 "            FILTER(?g = "+ source +")\n" +
                                 "        }\n" +
                                 "        group by ?g ?class\n" +

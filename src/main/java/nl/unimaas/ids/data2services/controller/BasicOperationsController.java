@@ -87,6 +87,15 @@ public class BasicOperationsController {
         
         return readEntities.metadataSources();
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{source}/")
+    public String getSource(@PathParam("source") String source, @Context HttpServletRequest request) {
+        String txt = this.readEntities.source(source);
+
+        return txt;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,14 +106,6 @@ public class BasicOperationsController {
         return classList;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{source}/")
-    public String getSource(@PathParam("source") String source, @Context HttpServletRequest request) {
-        String txt = this.readEntities.source(source);
-
-        return txt;
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -138,7 +139,7 @@ public class BasicOperationsController {
     public String subject(@PathParam("source") String source, @PathParam("class") String sClass, @PathParam("id") String id, @Context HttpServletRequest request) throws Exception {
         String url = request.getRequestURL().toString();
 
-        String result readEntities.sourceClassId(source, sClass, id);
+        String result = readEntities.sourceClassId(source, sClass, id);
 
         return result;
     }

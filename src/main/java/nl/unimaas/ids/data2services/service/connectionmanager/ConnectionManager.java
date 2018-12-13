@@ -32,7 +32,7 @@ import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
  */
 public class ConnectionManager {
     
-    String endpointURL = "http://graphdb.dumontierlab.com/repositories/ncats-red-kg";
+    private String endpointURL = "http://graphdb.dumontierlab.com/repositories/ncats-red-kg";
     private RepositoryConnection connection = null;
 
     public ConnectionManager() {

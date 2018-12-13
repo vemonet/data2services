@@ -25,7 +25,7 @@ package nl.unimaas.ids.data2services.service;
 
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 
-import nl.unimaas.ids.data2services.service.ConnectionManager.ConnectionManager;
+import nl.unimaas.ids.data2services.service.connectionmanager.ConnectionManager;
 
 /**
  *
