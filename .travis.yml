@@ -1,6 +1,16 @@
 language: java
-jdk: oraclejdk8
+jdk:
+  -oraclejdk8
 
 sudo: false # faster builds
 
-script: "mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
+before_install
+  - git clone https://github.com/nunogit/data2services
+  - cd ~/data2services
+  - git checkout master
+  - mvn install
+  - cd $TRAVIS_BUILD_DIR
+after_success:
+
+
+#script: "mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
