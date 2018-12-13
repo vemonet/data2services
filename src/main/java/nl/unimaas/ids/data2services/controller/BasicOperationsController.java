@@ -83,7 +83,7 @@ public class BasicOperationsController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/metadata/sources/")
-    public String metadataSources(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
+    public String getMetadataSources(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
         
         return readEntities.metadataSources();
     }
@@ -92,7 +92,7 @@ public class BasicOperationsController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{source}/{class}")
     public String getClassesForSource(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
-        String classList = readEntities.getClassList();
+        String classList = readEntities.getSourceClass(source, sClass);
 
         return classList;
     }
@@ -100,8 +100,8 @@ public class BasicOperationsController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{source}/")
-    public String classListBySource(@PathParam("source") String source, @Context HttpServletRequest request) {
-        String txt = this.readEntities.getClassList();
+    public String getSource(@PathParam("source") String source, @Context HttpServletRequest request) {
+        String txt = this.readEntities.source(source);
 
         return txt;
     }

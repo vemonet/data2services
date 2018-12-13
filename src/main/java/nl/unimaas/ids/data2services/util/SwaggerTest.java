@@ -122,7 +122,7 @@ public class SwaggerTest {
         swagger.path(sPath, path);
     }
     
-private void operationSource(){
+    private void operationSource(){
         String sPath = "/{source}/";
         String operationDescription = "test";
         
@@ -138,7 +138,6 @@ private void operationSource(){
         operation.description(operationDescription);
         operation.addParameter(parameter1);
         
-        operation.addProduces("json");
         operation.addResponse("200", new Response());
 
         Path path = new Path();

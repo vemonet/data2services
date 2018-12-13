@@ -8,7 +8,10 @@ package nl.unimaas.ids.data2services.service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,21 +60,6 @@ public class ReadEntitiesFromEndPoint {
 																		// Tools | Templates.
 	}
 
-	public String getClassList() {
-		String queryString = "select distinct ?Concept where {[] a ?Concept}";
-
-		String result = "";
-		try {
-			result = post(queryString);
-		} catch (Exception ex) {
-			Logger.getLogger(ReadEntitiesFromEndPoint.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
-		System.out.println(result);
-
-		return result;
-
-	}
 
 	public String getSources() {
 		String queryString = "select distinct ?g where {graph ?g {?s ?p ?o}}";
@@ -160,32 +148,107 @@ public class ReadEntitiesFromEndPoint {
 		}
 	}
 
+    // https://github.com/vemonet/insert-data2services/blob/master/services-queries/get_datasets.rq
     public String metadataSources() {
-        String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-            "PREFIX dct: <http://purl.org/dc/terms/>\n" +
-            "\n" +
-            "SELECT ?class ?classLabel ?classCount\n" +
-            "WHERE\n" +
-            "{\n" +
-            "    {\n" +
-            "        select ?g ?class (count(?class) as ?classCount)  \n" +
-            "        where {\n" +
-            "            graph ?g {\n" +
-            "                [] a ?class .\n" +
-            "            }\n" +
-            "            # Should be a variable (source)\n" +
-            "            FILTER(?g = <http://data2services/biolink/drugbank>)\n" +
-            "        }\n" +
-            "        group by ?g ?class\n" +
-            "        order by desc(?classCount)\n" +
-            "    }\n" +
-            "    \n" +
-            "    optional {\n" +
-            "        ?class rdfs:label ?classLabel .\n" +
-            "    }\n" +
-            "}";
+        String queryString = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n" +
+                                "PREFIX dcat: <http://www.w3.org/ns/dcat#>\n" +
+                                "PREFIX dctypes: <http://purl.org/dc/dcmitype/>\n" +
+                                "PREFIX dct: <http://purl.org/dc/terms/>\n" +
+                                "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
+                                "PREFIX idot: <http://identifiers.org/idot/>\n" +
+                                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+                                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                                "PREFIX void: <http://rdfs.org/ns/void/>\n" +
+                                "\n" +
+                                "# Add ?classCount\n" +
+                                "SELECT ?source ?graph \n" +
+                                "WHERE {\n" +
+                                "    GRAPH <http://data2services/metadata/datasets>\n" +
+                                "    {\n" +
+                                "        ?dataset a dctypes:Dataset ;\n" +
+                                "            idot:preferredPrefix ?source ;\n" +
+                                "            dcat:accessURL ?graph .\n" +
+                                "        ?version dct:isVersionOf ?dataset ; \n" +
+                                "            dcat:distribution [ a void:Dataset ] .  \n" +
+                                "    }\n" +
+                                "}";
 
 	String result = post(queryString);
 	return result;
+    }
+    
+    // https://github.com/vemonet/insert-data2services/blob/master/services-queries/classes_by_datasets.rq
+    public String source(String source) {
+            try {
+                //String queryString = "select distinct ?Concept where {[] a ?Concept}";
+                source = URLDecoder.decode(source, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(ReadEntitiesFromEndPoint.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                                "PREFIX dct: <http://purl.org/dc/terms/>\n" +
+                                "\n" +
+                                "SELECT ?class ?classLabel ?classCount\n" +
+                                "WHERE\n" +
+                                "{\n" +
+                                "    {\n" +
+                                "        select ?g ?class (count(?class) as ?classCount)  \n" +
+                                "        where {\n" +
+                                "            graph ?g {\n" +
+                                "                [] a ?class .\n" +
+                                "            }\n" +
+                                "            # Should be a variable (source)\n" +
+                //<http://data2services/biolink/drugbank>
+                //%3Chttp%3A//data2services/biolink/drugbank%3E
+                                "            FILTER(?g = "+ source +")\n" +
+                                "        }\n" +
+                                "        group by ?g ?class\n" +
+                                "        order by desc(?classCount)\n" +
+                                "    }\n" +
+                                "    \n" +
+                                "    optional {\n" +
+                                "        ?class rdfs:label ?classLabel .\n" +
+                                "    }\n" +
+                                "}";
+
+        String result = "";
+        try {
+                result = post(queryString);
+        } catch (Exception ex) {
+                Logger.getLogger(ReadEntitiesFromEndPoint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        System.out.println(result);
+
+        return result;
+    }
+    public String getSourceClass(String source, String type) {
+        
+       source = URLDecoder.decode(source, "UTF-8");
+       type = URLDecoder.decode(type, "UTF-8");
+        
+       String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                        "PREFIX dct: <http://purl.org/dc/terms/>\n" +
+                        "PREFIX bl: <http://bioentity.io/vocab/>\n" +
+                        "\n" +
+                        "SELECT ?item\n" +
+                        "WHERE \n" +
+                        "{\n" +
+                        "    # Should be a variable (source)\n" +
+                      //"    GRAPH <http://data2services/biolink/drugbank> \n" +
+                      //     %3Chttp%3A//data2services/biolink/drugbank%3E
+                        "    GRAPH "+graph+ " \n" +
+                        "    {\n" +
+                        "        # Should be a variable (type)\n" +
+                      //"        ?item a bl:Drug .\n" +
+                      //         bl%3ADrug
+                        "        ?item a "+type+" .\n" +
+                       "    }";
+       
+       
+       String result = "";
+       result = post(queryString);
+       return result;
     }
 }
