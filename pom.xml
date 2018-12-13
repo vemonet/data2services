@@ -11,7 +11,7 @@
 
 	<properties>
 		<swagger-version>1.5.21</swagger-version>
-		<rdf4j.version>2.1.4</rdf4j.version>
+		<rdf4j.version>2.4.0</rdf4j.version>
 		<swagger-ui-version>3.18.0</swagger-ui-version>
 		<binder-swagger-version>0.8.0</binder-swagger-version>
 		<jersey.version>2.26</jersey.version>
