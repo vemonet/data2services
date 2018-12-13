@@ -28,6 +28,7 @@ import io.swagger.models.Info;
 import io.swagger.models.License;
 import io.swagger.models.Operation;
 import io.swagger.models.Path;
+import io.swagger.models.Response;
 import io.swagger.models.Swagger;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
@@ -111,6 +112,9 @@ public class SwaggerTest {
         
         Operation operation = new Operation();
         operation.description(operationDescription);
+        
+        //operation.addProduces("json");
+        operation.addResponse("200", new Response());
 
         Path path = new Path();
         path.setGet(operation);
@@ -133,6 +137,9 @@ private void operationSource(){
         Operation operation = new Operation();
         operation.description(operationDescription);
         operation.addParameter(parameter1);
+        
+        operation.addProduces("json");
+        operation.addResponse("200", new Response());
 
         Path path = new Path();
         path.setGet(operation);
@@ -280,8 +287,6 @@ private void operationSource(){
 //    }
     
     public void registerOperation(ServiceRealm serviceDomain, String sPath){
-        
-         
          String[] pathSegments = sPath.split("/");
          
          //String[] pathSegments = (sPath.charAt(0) == '/' ? sPath.substring(1) : sPath).split("/");        
@@ -306,9 +311,9 @@ private void operationSource(){
               
             Path path = new Path();
             path.setGet(operation);
-
-                   
-//            swagger.path(sPath, path);
+            
+            String sRealm = serviceDomain.getRealm().isPresent() ? "/"+ serviceDomain.getRealm() : "";
+            swagger.path( sRealm + sPath, path);
          }
     
     public String getSwaggerJson(){

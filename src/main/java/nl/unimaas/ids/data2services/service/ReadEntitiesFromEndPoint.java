@@ -159,4 +159,33 @@ public class ReadEntitiesFromEndPoint {
 			return "error"; // replace with custom error
 		}
 	}
+
+    public String metadataSources() {
+        String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+            "PREFIX dct: <http://purl.org/dc/terms/>\n" +
+            "\n" +
+            "SELECT ?class ?classLabel ?classCount\n" +
+            "WHERE\n" +
+            "{\n" +
+            "    {\n" +
+            "        select ?g ?class (count(?class) as ?classCount)  \n" +
+            "        where {\n" +
+            "            graph ?g {\n" +
+            "                [] a ?class .\n" +
+            "            }\n" +
+            "            # Should be a variable (source)\n" +
+            "            FILTER(?g = <http://data2services/biolink/drugbank>)\n" +
+            "        }\n" +
+            "        group by ?g ?class\n" +
+            "        order by desc(?classCount)\n" +
+            "    }\n" +
+            "    \n" +
+            "    optional {\n" +
+            "        ?class rdfs:label ?classLabel .\n" +
+            "    }\n" +
+            "}";
+
+	String result = post(queryString);
+	return result;
+    }
 }

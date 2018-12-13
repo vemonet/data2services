@@ -15,16 +15,16 @@ import nl.unimaas.ids.data2services.util.SwaggerTest;
  */
 public abstract class AbstractPathHandler {
     
-    private ServiceRealm domain = new ServiceRealm();
+    private ServiceRealm realm = new ServiceRealm();
     private String pathHandlerModel = "";
     
     
     public void setServiceRealm(ServiceRealm serviceDomain){
-        this.domain = domain;
+        this.realm = realm;
     }
     
     public ServiceRealm getServiceRealm(){
-        return domain;
+        return realm;
     }
     
     public void setPathHandlerModel(String pathHandlerModel){
@@ -36,7 +36,7 @@ public abstract class AbstractPathHandler {
     }
     
     public void setupSwaggerOperation(){
-          SwaggerTest.getInstance().registerOperation(this.domain, this.pathHandlerModel);
+          SwaggerTest.getInstance().registerOperation(this.realm, this.pathHandlerModel);
     }
     
     public abstract String process(String path);
