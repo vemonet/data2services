@@ -223,6 +223,7 @@ public class ReadEntitiesFromEndPoint {
 
         return result;
     }
+    
     public String getSourceClass(String source, String type) {
         
        source = URLDecoder.decode(source, "UTF-8");
@@ -250,5 +251,42 @@ public class ReadEntitiesFromEndPoint {
        String result = "";
        result = post(queryString);
        return result;
+    }
+
+    // https://github.com/vemonet/insert-data2services/blob/master/services-queries/class_get_item_by_id.rq
+    public String sourceClassId(String source, String sClass, String id) {
+            try {
+                source = URLDecoder.decode(source, "UTF-8");
+                type = URLDecoder.decode(type, "UTF-8");
+                id = URLDecoder.decode(type, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(ReadEntitiesFromEndPoint.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       
+            String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                                    "PREFIX dct: <http://purl.org/dc/terms/>\n" +
+                                    "PREFIX bl: <http://bioentity.io/vocab/>\n" +
+                                    "\n" +
+                                    "SELECT ?predicate ?object\n" +
+                                    "WHERE \n" +
+                                    "{\n" +
+                                    "    # Should be a variable (source)\n" +
+                                    //"    GRAPH <http://data2services/biolink/drugbank> \n" +
+                                    "    GRAPH "+source+" \n" +
+                                    "    {\n" +
+                                    "        # Should be a variable (type)\n" +
+                                    //"        ?item a bl:Drug .\n" +
+                                    "        ?item "+ sClass +" .\n" +
+                                    "        # Should be a variable (id)\n" +
+                                    //"        ?item bl:id \"DB11571\" .\n" +
+                                    "        ?item bl:id \""+id+"\" .\n" +
+                                    "        \n" +
+                                    "        ?item ?predicate ?object .\n" +
+                                    "    }\n" +
+                                    "}";
+            
+            String result = post(queryString);
+            return result;
+            
     }
 }

@@ -134,28 +134,13 @@ public class BasicOperationsController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{source}/{rdftype}/{blid}")
-    public String subject(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) throws Exception {
+    @Path("/{source}/{class}/{id}")
+    public String subject(@PathParam("source") String source, @PathParam("class") String sClass, @PathParam("id") String id, @Context HttpServletRequest request) throws Exception {
         String url = request.getRequestURL().toString();
 
-        IRI uri = SimpleValueFactory.getInstance().createIRI(url);
+        String result readEntities.sourceClassId(source, sClass, id);
 
-        readEntities.getSubject(uri);
-
-        try {
-            id = new String(Base64.getDecoder().decode(id), "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        String s = "";
-        try {
-            s = readEntities.getSubject(SimpleValueFactory.getInstance().createIRI(id));
-        } catch (Exception ex) {
-            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return s;
+        return result;
     }
 
     @GET
