@@ -15,7 +15,7 @@ import nl.unimaas.ids.data2services.model.ServiceRealm;
  */
 public class RegistryPathHandler {
     
-    Map<ServiceRealm, AbstractPathHandler> phMap = new HashMap<ServiceRealm, AbstractPathHandler>();
+    private Map<ServiceRealm, AbstractPathHandler> phMap = new HashMap<ServiceRealm, AbstractPathHandler>();
     
     
     public void registerHandler(AbstractPathHandler ph){

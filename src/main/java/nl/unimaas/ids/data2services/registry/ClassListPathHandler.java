@@ -10,7 +10,7 @@ package nl.unimaas.ids.data2services.registry;
  * @author nuno
  */
 public class ClassListPathHandler {
-    String pattern;
+    private String pattern;
 
     public ClassListPathHandler() {
         this.pattern = "/classList/";

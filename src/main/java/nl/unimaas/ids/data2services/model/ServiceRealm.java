@@ -12,7 +12,7 @@ import java.util.Optional;
  * @author nuno
  */
 public class ServiceRealm {
-    String serviceRealm = null;
+    private String serviceRealm = null;
 
     public ServiceRealm(String serviceDomain) {
         this.serviceRealm = serviceDomain;
