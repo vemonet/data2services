@@ -4,12 +4,14 @@ jdk:
 
 sudo: false # faster builds
 
-before_install:
-  - git clone https://github.com/nunogit/data2services
-  - cd ~/data2services
-  - git checkout master
-  - mvn install
-  - cd $TRAVIS_BUILD_DIR
+script: mvn install
+
+#before_install:
+#  - git clone https://github.com/nunogit/data2services
+#  - cd ~/data2services
+#  - git checkout master
+#  - mvn install
+#  - cd $TRAVIS_BUILD_DIR
 #after_success:
 
 
