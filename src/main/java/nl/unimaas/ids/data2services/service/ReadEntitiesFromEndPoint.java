@@ -43,8 +43,8 @@ public class ReadEntitiesFromEndPoint {
 		System.out.println("Starting...");
 		ReadEntitiesFromEndPoint entities = new ReadEntitiesFromEndPoint();
 
-		String e = entities.getClassList();
-		System.out.println(e);
+		//String e = entities.getClassList();
+		//System.out.println(e);
 		// entities.getSubject(new
 		// URIImpl("http://identifiers.org/wikipathways/WP1000_r80835"));
 	}
@@ -226,9 +226,14 @@ public class ReadEntitiesFromEndPoint {
     
     public String getSourceClass(String source, String type) {
         
-       source = URLDecoder.decode(source, "UTF-8");
-       type = URLDecoder.decode(type, "UTF-8");
-        
+            try {
+                source = URLDecoder.decode(source, "UTF-8");
+                type = URLDecoder.decode(type, "UTF-8");
+
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(ReadEntitiesFromEndPoint.class.getName()).log(Level.SEVERE, null, ex);
+            }
+   
        String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                         "PREFIX dct: <http://purl.org/dc/terms/>\n" +
                         "PREFIX bl: <http://bioentity.io/vocab/>\n" +
@@ -239,7 +244,7 @@ public class ReadEntitiesFromEndPoint {
                         "    # Should be a variable (source)\n" +
                       //"    GRAPH <http://data2services/biolink/drugbank> \n" +
                       //     %3Chttp%3A//data2services/biolink/drugbank%3E
-                        "    GRAPH "+graph+ " \n" +
+                        "    GRAPH "+source+ " \n" +
                         "    {\n" +
                         "        # Should be a variable (type)\n" +
                       //"        ?item a bl:Drug .\n" +
@@ -257,8 +262,8 @@ public class ReadEntitiesFromEndPoint {
     public String sourceClassId(String source, String sClass, String id) {
             try {
                 source = URLDecoder.decode(source, "UTF-8");
-                type = URLDecoder.decode(type, "UTF-8");
-                id = URLDecoder.decode(type, "UTF-8");
+                sClass = URLDecoder.decode(sClass, "UTF-8");
+                id = URLDecoder.decode(id, "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(ReadEntitiesFromEndPoint.class.getName()).log(Level.SEVERE, null, ex);
             }
