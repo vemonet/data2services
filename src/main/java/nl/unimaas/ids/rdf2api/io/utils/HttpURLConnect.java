@@ -25,8 +25,8 @@ import org.apache.http.message.BasicNameValuePair;
     public static String POST= "POST";
     public static String HEAD = "HEAD";
 
-    HttpResponse response = null;
-    String requestBody = "";
+    private HttpResponse response = null;
+    private String requestBody = "";
 
     private final String USER_AGENT = "Mozilla/5.0";
 
@@ -47,6 +47,7 @@ import org.apache.http.message.BasicNameValuePair;
         this.requestBody = body;
     }
     
+    //placeholder for future use
     public void setHeaders(){
         
     }

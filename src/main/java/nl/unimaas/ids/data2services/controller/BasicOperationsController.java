@@ -112,9 +112,6 @@ public class BasicOperationsController {
     @Path("/subjectList/{classId}")
     public String subjectList(@PathParam("classId") String classId, @Context HttpServletRequest request) {
 
-        //String url = request.getRequestURL().toString();
-        //URI uri = new URIImpl(url);
-        //readEntities.getSubject(uri);
         try {
             classId = new String(Base64.getDecoder().decode(classId), "UTF-8");
         } catch (UnsupportedEncodingException ex) {
@@ -137,7 +134,7 @@ public class BasicOperationsController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{source}/{class}/{id}")
     public String subject(@PathParam("source") String source, @PathParam("class") String sClass, @PathParam("id") String id, @Context HttpServletRequest request) throws Exception {
-        String url = request.getRequestURL().toString();
+        //String url = request.getRequestURL().toString();
 
         String result = readEntities.sourceClassId(source, sClass, id);
 

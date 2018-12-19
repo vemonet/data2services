@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,8 +35,8 @@ import nl.unimaas.ids.rdf2api.io.utils.HttpURLConnect;
 public class ReadEntitiesFromEndPoint {
 	private static final Logger logger = Logger.getLogger(ReadEntitiesFromEndPoint.class.getName());
 
-	HttpURLConnect httpConnect;
-	String endpointURL;
+	private HttpURLConnect httpConnect;
+	private String endpointURL;
 
 	public static void main(String[] args) {
 		System.out.println("Starting...");
@@ -91,16 +90,19 @@ public class ReadEntitiesFromEndPoint {
 		return result;
 	}
 
-	private String myvar; // legacy to be deleted
+	
 
 	public void getEntityTesting(IRI uri) {
+            
+                String myvar; 
+            
 		Repository db = new SailRepository(new MemoryStore());
 		db.initialize();
 
 		// Open a connection to the database
 		try (RepositoryConnection conn = db.getConnection()) {
 			try {
-				InputStream input = new ByteArrayInputStream(this.myvar.getBytes(StandardCharsets.UTF_8));
+				InputStream input = new ByteArrayInputStream(myvar.getBytes(StandardCharsets.UTF_8));
 				// .class.getResourceAsStream("/" + filename)) {
 				// add the RDF data from the inputstream directly to our database
 				conn.add(input, "", RDFFormat.TURTLE);

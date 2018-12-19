@@ -32,7 +32,7 @@ import java.util.Properties;
 
 public class Config {
 
-    Properties configFile;
+    private Properties configFile;
     
     public static void main(String argv[]){
         System.out.println();
