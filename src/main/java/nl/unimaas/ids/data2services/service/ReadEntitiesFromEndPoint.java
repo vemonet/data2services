@@ -94,7 +94,7 @@ public class ReadEntitiesFromEndPoint {
 
 	public void getEntityTesting(IRI uri) {
             
-                String myvar; 
+                String myvar = ""; 
             
 		Repository db = new SailRepository(new MemoryStore());
 		db.initialize();
