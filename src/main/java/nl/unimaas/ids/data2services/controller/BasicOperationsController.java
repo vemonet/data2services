@@ -46,6 +46,7 @@ import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.registry.AbstractPathHandler;
+import nl.unimaas.ids.data2services.registry.MetaDataSourcesPathHandler;
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
 import nl.unimaas.ids.data2services.registry.TestPathHandler;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
@@ -62,6 +63,7 @@ public class BasicOperationsController {
         
         registryPathHandler = new RegistryPathHandler();
         registryPathHandler.registerHandler(new TestPathHandler());
+        registryPathHandler.registerHandler(new MetaDataSourcesPathHandler());
     }
     
     @GET
@@ -72,21 +74,21 @@ public class BasicOperationsController {
     
     @GET
     @Path("/")   
-    public String a(@Context HttpServletRequest request, @Context HttpServletResponse response) {
+    public String homeRedirect(@Context HttpServletRequest request, @Context HttpServletResponse response) {
         
         response.setHeader("refresh","0;https://www.google.com/");
         //return swaggerTest.getSwaggerJson();
         
-        return "x";
+        return "";
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/metadata/sources/")
-    public String getMetadataSources(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
+ //   @GET
+ //   @Produces(MediaType.APPLICATION_JSON)
+ //   @Path("/metadata/sources/")
+ //   public String getMetadataSources(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
         
-        return readEntities.metadataSources();
-    }
+ //       return readEntities.metadataSources();
+ //  }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)

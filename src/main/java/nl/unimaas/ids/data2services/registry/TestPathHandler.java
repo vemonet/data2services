@@ -20,6 +20,9 @@ public class TestPathHandler extends AbstractPathHandler{
     }
     
     
+    private void readQueries(){
+    }
+    
     @Override
     public String process(String path) {
         return "this is a test for "+path;

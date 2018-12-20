@@ -32,6 +32,7 @@ import io.swagger.models.Response;
 import io.swagger.models.Swagger;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
+import java.util.ArrayList;
 import java.util.List;
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
@@ -106,21 +107,21 @@ public class SwaggerTest {
         return swagger;
     }
     
-    private void operationMetadataSources(){
-        String sPath = "/metadata/sources/";
-        String operationDescription = "test";
-        
-        Operation operation = new Operation();
-        operation.description(operationDescription);
-        
-        //operation.addProduces("json");
-        operation.addResponse("200", new Response());
-
-        Path path = new Path();
-        path.setGet(operation);
-
-        swagger.path(sPath, path);
-    }
+//    private void operationMetadataSources(){
+//        String sPath = "/metadata/sources/";
+//        String operationDescription = "test";
+//        
+//        Operation operation = new Operation();
+//        operation.description(operationDescription);
+//        
+//        //operation.addProduces("json");
+//        operation.addResponse("200", new Response());
+//
+//        Path path = new Path();
+//        path.setGet(operation);
+//
+//        swagger.path(sPath, path);
+//    }
     
     private void operationSource(){
         String sPath = "/{source}/";
@@ -234,7 +235,7 @@ public class SwaggerTest {
     
     private void generateOperations(){
             
-            operationMetadataSources();
+           /// operationMetadataSources();
             operationSource();
             operationClass();            
             operationSubjectList();
@@ -288,17 +289,18 @@ public class SwaggerTest {
 //    }
     
     public void registerOperation(ServiceRealm serviceDomain, String sPath){
-         String[] pathSegments = sPath.split("/");
+      
+         
+         List<String> variableList = this.parseVariblesFromPath(sPath);
          
          //String[] pathSegments = (sPath.charAt(0) == '/' ? sPath.substring(1) : sPath).split("/");        
          
          Operation operation = new Operation();
          
-         for(String pathSegment : pathSegments){
-                if(true /*sParameter(pathSegment)*/){
-                 
+         for(String variableElement : variableList){
+      
                     PathParameter parameter = new PathParameter();
-                    parameter.setName(pathSegment);
+                    parameter.setName(variableElement);
                     parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
 
                     //parameter.setEnum(readEntities.getEntities());
@@ -307,8 +309,9 @@ public class SwaggerTest {
                     parameter.setIn("path");
 
                     operation.addParameter(parameter);
-                }
              }
+            
+            operation.addResponse("200", new Response());
               
             Path path = new Path();
             path.setGet(operation);
@@ -317,16 +320,32 @@ public class SwaggerTest {
             swagger.path( sRealm + sPath, path);
          }
     
+    private List<String> parseVariblesFromPath(String sPath){
+            String[] pathSegments = sPath.split("/");
+            
+            ArrayList<String> variableList = new ArrayList<String>();
+            
+            for(String pathSegment : pathSegments){
+                if(isParameter(pathSegment))
+                      variableList.add(pathSegment);
+            }
+            
+            return variableList;
+     }
+    
+   private boolean isParameter(String pathSegment) {
+       if(pathSegment.length()>0 && pathSegment.charAt(0)=='{')
+        return true;
+       else
+        return false;
+    }
+    
     public String getSwaggerJson(){
                String jsonOutput = Json.pretty(this.swagger);
                return jsonOutput;
     }
 
-    private boolean isParameter(String pathSegment) {
-       System.out.println(pathSegment);
-       // create logic
-       return true;
-    }
+
     
     public static SwaggerTest getInstance() {
        return singleton;
