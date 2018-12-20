@@ -84,7 +84,6 @@ public class ReadEntitiesFromEndPoint {
 				"} ORDER BY ?s";
 
 		System.out.println(queryString);
-
 		String result = post(queryString);
 
 		return result;
@@ -295,5 +294,9 @@ public class ReadEntitiesFromEndPoint {
             String result = post(queryString);
             return result;
             
+    }
+    
+    String execute(String query){
+        return post(query);
     }
 }

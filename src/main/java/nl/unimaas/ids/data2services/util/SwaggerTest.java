@@ -333,11 +333,8 @@ public class SwaggerTest {
             return variableList;
      }
     
-   private boolean isParameter(String pathSegment) {
-       if(pathSegment.length()>0 && pathSegment.charAt(0)=='{')
-        return true;
-       else
-        return false;
+    private boolean isParameter(String pathSegment) {
+       return pathSegment.length()>0 && pathSegment.charAt(0)=='{';
     }
     
     public String getSwaggerJson(){

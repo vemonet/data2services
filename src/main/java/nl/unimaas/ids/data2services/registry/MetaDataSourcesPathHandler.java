@@ -7,6 +7,7 @@ package nl.unimaas.ids.data2services.registry;
 
 import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
+import nl.unimaas.ids.rdf2api.io.utils.FileReader;
 
 /**
  *
@@ -14,7 +15,7 @@ import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
  */
 public class MetaDataSourcesPathHandler extends AbstractPathHandler{
     
-    String pathHandlerModel = "/metadata/sources/";
+    private String pathHandlerModel = "/metadata/sources/";
     private ReadEntitiesFromEndPoint readEntities;
     
     
@@ -30,7 +31,13 @@ public class MetaDataSourcesPathHandler extends AbstractPathHandler{
     
     @Override
     public String process(String path) {
-        String data = readEntities.metadataSources();
+        FileReader fr = new FileReader("MetaData-Sources.ql");
+        
+        String query = fr.read();
+        
+        data = readEntities.execute(query);
+        
+        
         return data;
     }
     
