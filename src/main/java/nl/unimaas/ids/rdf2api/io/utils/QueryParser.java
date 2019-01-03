@@ -18,8 +18,11 @@ import nl.unimaas.ids.data2services.model.QueryVariable;
  */
 public class QueryParser {
     
+    
+    
     private final static String VARPATTERN = "\\{\\{(.*?)\\}\\}";
     private FileReader fileReader;
+    private List<Query> queryList = new ArrayList<Query>();
     
     public QueryParser(){
         fileReader = new FileReader("MetaData-Sources.ql");
@@ -28,8 +31,8 @@ public class QueryParser {
         parse(fileContent); 
     }
     
-    public List<String> getQueryList(){
-        
+    public List<Query> getQueryList(){
+        return this.queryList;
     }
     
     private void parse(String content){
@@ -54,6 +57,8 @@ public class QueryParser {
             List<QueryVariable> variableList = parseVariables(rawQuery);
             query.setVariableList(variableList);
             
+            this.queryList.add(query);
+                    
             }
         }  
         
@@ -77,7 +82,7 @@ public class QueryParser {
             }
            
          return variableList;
-    }
+        }
     
     
     
