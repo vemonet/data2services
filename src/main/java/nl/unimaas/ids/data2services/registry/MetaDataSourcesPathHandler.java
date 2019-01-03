@@ -34,9 +34,7 @@ public class MetaDataSourcesPathHandler extends AbstractPathHandler{
         FileReader fr = new FileReader("MetaData-Sources.ql");
         
         String query = fr.read();
-        
         data = readEntities.execute(query);
-        
         
         return data;
     }
