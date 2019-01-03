@@ -19,6 +19,10 @@ import nl.unimaas.ids.data2services.model.QueryVariable;
 public class QueryParser {
     
     
+    public static void main(String [] args){
+       QueryParser qp = new QueryParser();
+    }
+    
     
     private final static String VARPATTERN = "\\{\\{(.*?)\\}\\}";
     private FileReader fileReader;

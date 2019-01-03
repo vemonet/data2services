@@ -24,7 +24,7 @@ public class MetaDataSourcesPathHandler extends AbstractPathHandler{
         this.setPathHandlerModel(this.pathHandlerModel);
         setupSwaggerOperation();
         
-        //init data access
+       //init data access
         readEntities = new ReadEntitiesFromEndPoint();
     }
     
@@ -34,6 +34,7 @@ public class MetaDataSourcesPathHandler extends AbstractPathHandler{
         FileReader fr = new FileReader("MetaData-Sources.ql");
         
         String query = fr.read();
+        String data;
         data = readEntities.execute(query);
         
         return data;

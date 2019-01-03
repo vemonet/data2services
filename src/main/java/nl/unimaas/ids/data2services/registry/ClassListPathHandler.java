@@ -13,6 +13,6 @@ public class ClassListPathHandler {
     //private String pattern;
 
     public ClassListPathHandler() {
-        this.pattern = "/classList/";
+        //this.pattern = "/classList/";
     }
 }

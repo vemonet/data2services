@@ -296,7 +296,7 @@ public class ReadEntitiesFromEndPoint {
             
     }
     
-    String execute(String query){
+    public String execute(String query){
         return post(query);
     }
 }

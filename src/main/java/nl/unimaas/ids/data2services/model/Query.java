@@ -17,11 +17,11 @@ public class Query {
     private List<QueryVariable> variableNameList;
 
     
-    public List<String> variableNameList(){
+    public List<QueryVariable> variableNameList(){
         return variableNameList;
     }
     
-    public void addVariableName(String variableName){
+    public void addVariableName(QueryVariable variableName){
         variableNameList.add(variableName);
     }
     
