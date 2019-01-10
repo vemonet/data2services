@@ -5,7 +5,10 @@
  */
 package nl.unimaas.ids.data2services.registry;
 
+import java.util.List;
+import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
+import nl.unimaas.ids.rdf2api.io.utils.QueryParser;
 
 /**
  *
@@ -14,8 +17,16 @@ import nl.unimaas.ids.data2services.model.ServiceRealm;
 public class TestPathHandler extends AbstractPathHandler{
     
     public TestPathHandler(){
+        
+        QueryParser qp = new QueryParser();
+        List<Query> queryList = qp.getQueryList();
+        
         this.setServiceRealm(new ServiceRealm("test"));
-        this.setPathHandlerModel("/{testx}/{test2}/{test3}");
+        
+        for(Query query : queryList){
+            this.addPathHandlerModel( query.getPath("{varName}") );
+        }
+        
         setupSwaggerOperation();
     }
     

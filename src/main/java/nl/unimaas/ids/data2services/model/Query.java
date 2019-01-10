@@ -14,6 +14,7 @@ import java.util.List;
 public class Query {
     private String label;
     private String rawQuery;
+    private String path;
     private List<QueryVariable> variableNameList;
 
     
@@ -55,5 +56,20 @@ public class Query {
 
     public void setVariableList(List<QueryVariable> variableList) {
         this.variableNameList = variableList;
+    }
+
+    //think about a way of making this abstract
+    public void setPath(String path) {
+        this.path = path;
+    }
+    
+    //return raw path (as is)
+    public String getPath(){
+        return this.path;
+    }
+    
+    //return path according to a specific variable template
+    public String getPath(String variableTemplate) {
+        return this.path;
     }
 }

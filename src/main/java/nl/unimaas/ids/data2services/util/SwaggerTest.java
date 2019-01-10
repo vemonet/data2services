@@ -290,11 +290,8 @@ public class SwaggerTest {
     
     public void registerOperation(ServiceRealm serviceDomain, String sPath){
       
-         
-         List<String> variableList = this.parseVariblesFromPath(sPath);
-         
+         List<String> variableList = this.parseVariblesFromPath(sPath);   
          //String[] pathSegments = (sPath.charAt(0) == '/' ? sPath.substring(1) : sPath).split("/");        
-         
          Operation operation = new Operation();
          
          for(String variableElement : variableList){

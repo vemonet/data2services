@@ -1,5 +1,7 @@
 package nl.unimaas.ids.data2services.registry;
 
+import java.util.ArrayList;
+import java.util.List;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.data2services.util.SwaggerTest;
 
@@ -16,7 +18,7 @@ import nl.unimaas.ids.data2services.util.SwaggerTest;
 public abstract class AbstractPathHandler {
     
     private ServiceRealm realm = new ServiceRealm();
-    private String pathHandlerModel = "";
+    private List<String> pathHandlerModelList = new ArrayList<String>();
     
     
     public void setServiceRealm(ServiceRealm serviceDomain){
@@ -27,16 +29,17 @@ public abstract class AbstractPathHandler {
         return realm;
     }
     
-    public void setPathHandlerModel(String pathHandlerModel){
-        this.pathHandlerModel = pathHandlerModel;
+    public void addPathHandlerModel(String pathHandlerModel){
+        this.pathHandlerModelList.add(pathHandlerModel);
     }
     
-    public String getPathHandlerModel(){
-        return pathHandlerModel;
+    public List<String> getPathHandlerModelList(){
+        return this.pathHandlerModelList;
     }
     
     public void setupSwaggerOperation(){
-          SwaggerTest.getInstance().registerOperation(this.realm, this.pathHandlerModel);
+          for(String pathHandler : this.pathHandlerModelList)
+            SwaggerTest.getInstance().registerOperation(this.realm, pathHandler);
     }
     
     public abstract String process(String path);

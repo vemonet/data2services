@@ -21,15 +21,30 @@ public class QueryParser {
     
     public static void main(String [] args){
        QueryParser qp = new QueryParser();
+       int i = 0;
+       for(Query query : qp.getQueryList()){
+            System.out.println("query " + ++i);
+            System.out.println("label: "+query.getLabel());
+            System.out.println("query: "+query.getRawQuery());
+            System.out.println("variable list:");
+            
+            for(QueryVariable qvariable : query.variableNameList()){
+                System.out.print(qvariable.getLabel() + " " + qvariable.getId() + "; ");
+            }
+            
+            System.out.println("");
+       }
     }
     
-    
-    private final static String VARPATTERN = "\\{\\{(.*?)\\}\\}";
+    //pattern {{variable}}
+    //private final static String VARPATTERN = "\\{\\{(.*?)\\}\\}";
+    //pattern ?_variable
+    private final static String VARPATTERN = "\\?_([a-zA-Z0-9_]+)";
     private FileReader fileReader;
     private List<Query> queryList = new ArrayList<Query>();
     
     public QueryParser(){
-        fileReader = new FileReader("MetaData-Sources.ql");
+        fileReader = new FileReader("queries.ql");
         
         String fileContent = fileReader.read();
         parse(fileContent); 
@@ -40,19 +55,21 @@ public class QueryParser {
     }
     
     private void parse(String content){
-        String[] contentSplit = content.split("/n/n");
+        String[] contentSplit = content.split("\n\n");
         
         for(String sQuery : contentSplit){
             Query query = new Query();
             
-            String[] queryStringArray = sQuery.split("/n");
+            String[] queryStringArray = sQuery.split("\n");
             String rawQuery = "";
             
             for(int i = 0; i < queryStringArray.length; i++){
-                if(i==0)
-                    query.setLabel(queryStringArray[0]);
-                else{
-                   rawQuery += queryStringArray[i];
+                if(i==0){
+                    query.setLabel(this.cleanComment( queryStringArray[0] ));
+                }else if(i==1){
+                    query.setPath(this.cleanComment( queryStringArray[1] ));
+                }else{
+                    rawQuery += queryStringArray[i];
                 }
             }
             
@@ -81,6 +98,7 @@ public class QueryParser {
                 
                 qv = new QueryVariable();
                 qv.setLabel(variableName);
+                qv.setId(matcher.group(0));
                 
                 variableList.add(qv);
             }
@@ -88,6 +106,10 @@ public class QueryParser {
          return variableList;
         }
     
+        private String cleanComment(String string){
+            string = string.substring(1);
+            return string.trim();
+        }
     
     
 }
