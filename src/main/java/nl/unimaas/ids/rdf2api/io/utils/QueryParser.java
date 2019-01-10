@@ -18,6 +18,12 @@ import nl.unimaas.ids.data2services.model.QueryVariable;
  */
 public class QueryParser {
     
+    //pattern {{variable}}
+    //private final static String VARPATTERN = "\\{\\{(.*?)\\}\\}";
+    //pattern ?_variable
+    private final static String VARPATTERN = "\\?_([a-zA-Z0-9_]+)";
+    private FileReader fileReader;
+    private List<Query> queryList = new ArrayList<Query>();
     
     public static void main(String [] args){
        QueryParser qp = new QueryParser();
@@ -35,13 +41,6 @@ public class QueryParser {
             System.out.println("");
        }
     }
-    
-    //pattern {{variable}}
-    //private final static String VARPATTERN = "\\{\\{(.*?)\\}\\}";
-    //pattern ?_variable
-    private final static String VARPATTERN = "\\?_([a-zA-Z0-9_]+)";
-    private FileReader fileReader;
-    private List<Query> queryList = new ArrayList<Query>();
     
     public QueryParser(){
         fileReader = new FileReader("queries.ql");
@@ -106,9 +105,9 @@ public class QueryParser {
          return variableList;
         }
     
-        private String cleanComment(String string){
-            string = string.substring(1);
-            return string.trim();
+        private String cleanComment(String txt){
+            String cleanTxt = txt.substring(1);
+            return cleanTxt.trim();
         }
     
     
