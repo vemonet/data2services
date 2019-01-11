@@ -30,6 +30,7 @@ package nl.unimaas.ids.data2services.model;
 public class QueryVariable { //TODO should extend Entity?
       private String label;
       private String id;
+      private String value;
 
     /**
      * @return the id
@@ -57,5 +58,13 @@ public class QueryVariable { //TODO should extend Entity?
      */
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+    
+    public String getValue(){
+        return this.value;
     }
 }
