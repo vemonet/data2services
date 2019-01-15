@@ -45,6 +45,7 @@ import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 import nl.unimaas.ids.data2services.model.IRIEntity;
+import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.data2services.registry.AbstractPathHandler;
 import nl.unimaas.ids.data2services.registry.MetaDataSourcesPathHandler;
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
@@ -56,14 +57,14 @@ import nl.unimaas.ids.data2services.util.SwaggerTest;
 public class BasicOperationsController {
     private RegistryPathHandler registryPathHandler;
     private SwaggerTest swaggerTest;
-    private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
+    //private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
 
     public BasicOperationsController(){
         swaggerTest = SwaggerTest.getInstance();
         
         registryPathHandler = new RegistryPathHandler();
         registryPathHandler.registerHandler(new TestPathHandler());
-        registryPathHandler.registerHandler(new MetaDataSourcesPathHandler());
+       //registryPathHandler.registerHandler(new MetaDataSourcesPathHandler());
     }
     
     @GET
@@ -86,81 +87,82 @@ public class BasicOperationsController {
  //   @Produces(MediaType.APPLICATION_JSON)
  //   @Path("/metadata/sources/")
  //   public String getMetadataSources(@PathParam("id") String id, @PathParam("id2") String id2, @Context HttpServletRequest request) {
-        
+ //       
  //       return readEntities.metadataSources();
  //  }
     
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{source}/")
-    public String getSource(@PathParam("source") String source, @Context HttpServletRequest request) {
-        String txt = this.readEntities.source(source);
-
-        return txt;
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{source}/{class}")
-    public String getClassesForSource(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
-        String classList = readEntities.getSourceClass(source, sClass);
-
-        return classList;
-    }
-
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/subjectList/{classId}")
-    public String subjectList(@PathParam("classId") String classId, @Context HttpServletRequest request) {
-
-        try {
-            classId = new String(Base64.getDecoder().decode(classId), "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        System.out.println(classId);
-
-        String txt = "";
-        try {
-            txt = readEntities.getSubjectListByClass(SimpleValueFactory.getInstance().createIRI(classId));
-        } catch (Exception ex) {
-            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return txt;
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{source}/{class}/{id}")
-    public String subject(@PathParam("source") String source, @PathParam("class") String sClass, @PathParam("id") String id, @Context HttpServletRequest request) throws Exception {
-        //String url = request.getRequestURL().toString();
-
-        String result = readEntities.sourceClassId(source, sClass, id);
-
-        return result;
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/datasources")
-    public String datasources() {
-        return readEntities.getSources();
-    }
-
-    //generalize
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/pathwayListBySpecies/{species}")
-    public String genericMethod(@PathParam("species") String species, @Context HttpServletRequest request) {
-        
-        String s = "";
-        //String s = this.queries.executeQuery(species);
-
-        return s;
-    }
+    //commented to test dynamic libraries
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Path("/{source}/")
+//    public String getSource(@PathParam("source") String source, @Context HttpServletRequest request) {
+//        String txt = this.readEntities.source(source);
+//
+//        return txt;
+//    }
+//
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Path("/{source}/{class}")
+//    public String getClassesForSource(@PathParam("source") String source, @PathParam("class") String sClass, @Context HttpServletRequest request) {
+//        String classList = readEntities.getSourceClass(source, sClass);
+//
+//        return classList;
+//    }
+//
+//
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Path("/subjectList/{classId}")
+//    public String subjectList(@PathParam("classId") String classId, @Context HttpServletRequest request) {
+//
+//        try {
+//            classId = new String(Base64.getDecoder().decode(classId), "UTF-8");
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        System.out.println(classId);
+//
+//        String txt = "";
+//        try {
+//            txt = readEntities.getSubjectListByClass(SimpleValueFactory.getInstance().createIRI(classId));
+//        } catch (Exception ex) {
+//            Logger.getLogger(BasicOperationsController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        return txt;
+//    }
+//
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Path("/{source}/{class}/{id}")
+//    public String subject(@PathParam("source") String source, @PathParam("class") String sClass, @PathParam("id") String id, @Context HttpServletRequest request) throws Exception {
+//        //String url = request.getRequestURL().toString();
+//
+//        String result = readEntities.sourceClassId(source, sClass, id);
+//
+//        return result;
+//    }
+//
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Path("/datasources")
+//    public String datasources() {
+//        return readEntities.getSources();
+//    }
+//
+//    //generalize
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Path("/pathwayListBySpecies/{species}")
+//    public String genericMethod(@PathParam("species") String species, @Context HttpServletRequest request) {
+//        
+//        String s = "";
+//        //String s = this.queries.executeQuery(species);
+//
+//        return s;
+//    }
 
     //allow method to be extended
     @GET
@@ -179,12 +181,12 @@ public class BasicOperationsController {
 
         for (int i = 0; i < segments.size(); i++) {
             if(i!=0)
-                path += segments.get(i).getPath();
+                path += "/"+segments.get(i).getPath();
             else
-                serviceRealm = "/" + segments.get(i).getPath();
+                serviceRealm = segments.get(i).getPath();
         }
 
-        AbstractPathHandler pathHandler = registryPathHandler.getHandler(serviceRealm, path);
+        AbstractPathHandler pathHandler = registryPathHandler.getHandler(new ServiceRealm(serviceRealm), path);
         
         String result = pathHandler.process(path);
         

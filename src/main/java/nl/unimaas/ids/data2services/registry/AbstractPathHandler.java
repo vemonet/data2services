@@ -27,7 +27,7 @@ public abstract class AbstractPathHandler {
     
     
     public void setServiceRealm(ServiceRealm serviceDomain){
-        this.realm = realm;
+        this.realm = serviceDomain;
     }
     
     public ServiceRealm getServiceRealm(){
@@ -43,8 +43,12 @@ public abstract class AbstractPathHandler {
     }
     
     public void setupSwaggerOperation(){
-          for(String pathHandler : this.pathHandlerModelList)
-            SwaggerTest.getInstance().registerOperation(this.realm, pathHandler);
+          for(String pathHandler : this.pathHandlerModelList){
+            //System.out.println("registering for "+pathHandler);
+            //System.out.flush();
+           
+            SwaggerTest.getInstance().registerOperation(this.getServiceRealm(), pathHandler);
+          }
     }
         
     

@@ -68,7 +68,7 @@ public class QueryParser {
                 }else if(i==1){
                     query.setPath(this.cleanComment( queryStringArray[1] ));
                 }else{
-                    rawQuery += queryStringArray[i];
+                    rawQuery += queryStringArray[i] + "\n";
                 }
             }
             

@@ -1,26 +1,3 @@
-/*
- * The MIT License
- *
- * Copyright 2018 nuno.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package nl.unimaas.ids.data2services.util;
 
 import io.swagger.models.Contact;
@@ -101,7 +78,7 @@ public class SwaggerTest {
         
         generateOperations();
         //generateQueryOperations();
-        generateOperations();
+        //generateOperations();
 
         
         return swagger;
@@ -230,16 +207,21 @@ public class SwaggerTest {
             Path path = new Path();
             path.setGet(operation);
             
+            operation.addResponse("200", new Response());
+            
+
+            
             swagger.path("/{source}/{rdftype}/{blid}/", path);
     }
     
     private void generateOperations(){
             
            /// operationMetadataSources();
-            operationSource();
-            operationClass();            
-            operationSubjectList();
-            operationSubject();
+           
+            //operationSource();
+            //operationClass();            
+            //operationSubjectList();
+            //operationSubject();
             
             //SharingHolder sharing2 = sharing().pathPrefix("/getItem").tag("getItem");
     }
@@ -288,16 +270,21 @@ public class SwaggerTest {
 //        
 //    }
     
-    public void registerOperation(ServiceRealm serviceDomain, String sPath){
-      
-         List<String> variableList = this.parseVariblesFromPath(sPath);   
+    public void registerOperation(ServiceRealm realm, String sPath){
+         if(sPath!=null)
+         System.out.println("sPath "+sPath);
+         else System.out.println("path is null");
+         
+         //TODO Make util for this method (used in more than one class)
+         List<String> variableList = this.parseVariblesFromPath(sPath);
+         
          //String[] pathSegments = (sPath.charAt(0) == '/' ? sPath.substring(1) : sPath).split("/");        
          Operation operation = new Operation();
          
-         for(String variableElement : variableList){
+         for(String variable : variableList){
       
                     PathParameter parameter = new PathParameter();
-                    parameter.setName(variableElement);
+                    parameter.setName(variable.substring(1, variable.length() - 1)); //TODO improve - logic shouldnt be here
                     parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
 
                     //parameter.setEnum(readEntities.getEntities());
@@ -313,11 +300,14 @@ public class SwaggerTest {
             Path path = new Path();
             path.setGet(operation);
             
-            String sRealm = serviceDomain.getRealm().isPresent() ? "/"+ serviceDomain.getRealm() : "";
+            String sRealm = realm.getRealm().isPresent() ? "/"+ realm.getRealm().get() : "";
             swagger.path( sRealm + sPath, path);
          }
     
     private List<String> parseVariblesFromPath(String sPath){
+        
+            sPath = sPath.charAt(0) == '/' ? sPath.substring(1) : sPath;
+        
             String[] pathSegments = sPath.split("/");
             
             ArrayList<String> variableList = new ArrayList<String>();
@@ -331,7 +321,7 @@ public class SwaggerTest {
      }
     
     private boolean isParameter(String pathSegment) {
-       return pathSegment.length()>0 && pathSegment.charAt(0)=='{';
+       return pathSegment!=null && pathSegment.length()>0 && pathSegment.charAt(0)=='{';
     }
     
     public String getSwaggerJson(){

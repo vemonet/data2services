@@ -15,15 +15,17 @@ import nl.unimaas.ids.data2services.model.ServiceRealm;
  */
 public class RegistryPathHandler {
     
-    private Map<ServiceRealm, AbstractPathHandler> phMap = new HashMap<ServiceRealm, AbstractPathHandler>();
+    //TODO make map ServiceRealm by implementing equals
+    private Map<String, AbstractPathHandler> phMap = new HashMap<String, AbstractPathHandler>();
     
     
     public void registerHandler(AbstractPathHandler ph){
         ServiceRealm realm = ph.getServiceRealm();
-        phMap.put(realm, ph);
+        System.out.println("realm "+ realm.getRealm().get());
+        phMap.put(realm.getRealm().get(), ph);
     }
         
-    public AbstractPathHandler getHandler(String domain, String path){
-        return this.phMap.get(domain);
+    public AbstractPathHandler getHandler(ServiceRealm realm, String path){
+        return this.phMap.get(realm.getRealm().get());
     }
 }

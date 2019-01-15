@@ -41,7 +41,7 @@ public class MetaDataSourcesPathHandler extends AbstractPathHandler{
         try {
                // matchPath(path, );
             
-                String r = this.httpConnect.sendPost(this.endpointURL, this.data);
+                String r = this.httpConnect.sendPost(this.endpointURL, "");
                 return r;
         } catch (Exception ex) {
                //TODO setup logging properly

@@ -7,10 +7,13 @@ package nl.unimaas.ids.data2services.registry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nl.unimaas.ids.data2services.model.PathElement;
 import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.QueryVariable;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
+import nl.unimaas.ids.rdf2api.io.utils.HttpURLConnect;
 import nl.unimaas.ids.rdf2api.io.utils.QueryParser;
 
 /**
@@ -20,6 +23,8 @@ import nl.unimaas.ids.rdf2api.io.utils.QueryParser;
 public class TestPathHandler extends AbstractPathHandler{
     
     List<Query> queryList;
+    private HttpURLConnect httpConnect = new HttpURLConnect(); 
+    private String endpointURL = "http://graphdb.dumontierlab.com/repositories/ncats-red-kg";
     
     public TestPathHandler(){
         
@@ -41,11 +46,14 @@ public class TestPathHandler extends AbstractPathHandler{
     
     @Override
     public String process(String path) {
+        
         List<String> pathHandlerModelList = this.getPathHandlerModelList();
         
         int i = 0;
         for(String pathHandlerModel : pathHandlerModelList){
            if(matchPath(path, pathHandlerModel)){
+               
+//               return "true";
                
                String query = this.queryList.get(i).getRawQuery();
                
@@ -71,6 +79,16 @@ public class TestPathHandler extends AbstractPathHandler{
                for(QueryVariable queryVariable : queryVariableList){
                    query = query.replaceAll("\\?_"+ queryVariable.getLabel(),  queryVariable.getValue());
                }
+               System.out.println(query);
+               
+               String response;
+               try {
+                   response = this.httpConnect.sendPost(this.endpointURL, query);
+               } catch (Exception ex) {
+                   Logger.getLogger(TestPathHandler.class.getName()).log(Level.SEVERE, null, ex);
+                   return "processing issues";
+               }
+               return response;
            }
            i++;
         }
@@ -82,20 +100,30 @@ public class TestPathHandler extends AbstractPathHandler{
         List<PathElement> requestedPathElementList = decomposePath(requestedPath);
         List<PathElement> modelPathElementList = decomposePath(modelPath);
         
+     
+        
         if(requestedPathElementList.size()!=modelPathElementList.size()) return false;
         
-        for(int i = 0; i < requestedPathElementList.size(); i++){
-            if(!modelPathElementList.get(i).isVariable())
-                if(modelPathElementList.get(i).getLabel()!=requestedPathElementList.get(i).getLabel())
-                    return false;
-        }
         
+        for(int i = 0; i < requestedPathElementList.size(); i++){
+            if(!modelPathElementList.get(i).isVariable()){
+                String modelPathElementString = modelPathElementList.get(i).getLabel();
+                String requestedPathElementString = requestedPathElementList.get(i).getLabel();
+                
+                System.out.println("comparing -"+modelPathElementString + "- and -" + requestedPathElementString + "-");
+                
+                if( ! modelPathElementString.equals(requestedPathElementString) )
+                    return false;
+            }
+        }
         return true;   
     }
     
 
     
     private List<PathElement> decomposePath(String path){
+        path = path.charAt(0) == '/' ? path.substring(1) : path;
+        
         String[] splitPath = path.split("/");
         List<PathElement> pathElementList = new ArrayList<PathElement>();
         for(String sPathElement : splitPath){
