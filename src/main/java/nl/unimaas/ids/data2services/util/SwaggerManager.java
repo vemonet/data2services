@@ -292,7 +292,7 @@ public class SwaggerManager {
       
                     PathParameter parameter = new PathParameter();
                     parameter.setName(queryVariable.getLabel()); //TODO improve - logic shouldnt be here
-                    parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
+                    parameter.setRequired(true);  //TODO think about this (should it be empty and list entities)?
 
                     //parameter.setEnum(readEntities.getEntities());
                     parameter.setType("string"); //TODO should it be URL (check types)
