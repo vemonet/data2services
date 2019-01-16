@@ -47,7 +47,7 @@ import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.data2services.registry.AbstractPathHandler;
-import nl.unimaas.ids.data2services.registry.MetaDataSourcesPathHandler;
+
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
 import nl.unimaas.ids.data2services.registry.TestPathHandler;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
