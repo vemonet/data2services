@@ -60,6 +60,9 @@ public class BasicOperationsController {
     //private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
 
     public BasicOperationsController(){
+        System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
+        
+        
         swaggerTest = SwaggerTest.getInstance();
         
         registryPathHandler = new RegistryPathHandler();
