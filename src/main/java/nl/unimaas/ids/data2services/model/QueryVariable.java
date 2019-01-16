@@ -33,7 +33,7 @@ public class QueryVariable { //TODO should extend Entity?
       private String value;
 
     /**
-     * @return the id
+     * @return the id name without brakets
      */
     public String getId() {
         return id;
@@ -45,9 +45,19 @@ public class QueryVariable { //TODO should extend Entity?
     public void setId(String id) {
         this.id = id;
     }
+    
+    public void setId(String id, boolean clean){
+        if(id.startsWith("{{"))
+            this.id  = id.substring(2, id.length()-2);
+        if(id.startsWith("{"))
+            this.id  = id.substring(1, id.length()-1);
+        if(id.startsWith("?_"))
+            this.id  = id.substring(2);
+    }
+    
 
     /**
-     * @return the label
+     * @return the label (description)
      */
     public String getLabel() {
         return label;

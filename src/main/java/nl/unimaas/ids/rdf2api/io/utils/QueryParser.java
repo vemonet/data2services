@@ -97,7 +97,7 @@ public class QueryParser {
                 
                 qv = new QueryVariable();
                 qv.setLabel(variableName);
-                qv.setId(matcher.group(0));
+                qv.setId(matcher.group(0), true);
                 
                 variableList.add(qv);
             }

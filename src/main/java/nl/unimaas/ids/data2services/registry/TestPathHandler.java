@@ -66,7 +66,7 @@ public class TestPathHandler extends AbstractPathHandler{
                for(PathElement pathElement : pathModelElementList){
                    if(pathElement.isVariable()){
                        QueryVariable qv = new QueryVariable();
-                       qv.setId("?_"+pathElement.getLabel());
+                       qv.setId(pathElement.getLabel(), true);
                        qv.setLabel(pathElement.getLabel());
                        qv.setValue(  decodeVariable(pathElementList.get(n).getLabel())  );
                        
@@ -76,9 +76,11 @@ public class TestPathHandler extends AbstractPathHandler{
                }
                  
                //List<QueryVariable> queryVariableList = this.queryList.get(i).getVariables();
-              
+               
+               
                for(QueryVariable queryVariable : queryVariableList){
-                   sQuery = sQuery.replaceAll("\\?_"+ queryVariable.getLabel(),  queryVariable.getValue());
+                   System.out.println(queryVariable.getId() + " " + queryVariable.getValue());
+                   sQuery = sQuery.replaceAll("\\?_"+ queryVariable.getId(),  queryVariable.getValue());
                }
                System.out.println(sQuery);
                

@@ -291,7 +291,7 @@ public class SwaggerManager {
          for(QueryVariable queryVariable : variableList2){
       
                     PathParameter parameter = new PathParameter();
-                    parameter.setName(queryVariable.getLabel().substring(1, queryVariable.getLabel().length() - 1)); //TODO improve - logic shouldnt be here
+                    parameter.setName(queryVariable.getLabel()); //TODO improve - logic shouldnt be here
                     parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
 
                     //parameter.setEnum(readEntities.getEntities());
