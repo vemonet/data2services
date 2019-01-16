@@ -51,19 +51,19 @@ import nl.unimaas.ids.data2services.registry.MetaDataSourcesPathHandler;
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
 import nl.unimaas.ids.data2services.registry.TestPathHandler;
 import nl.unimaas.ids.data2services.service.ReadEntitiesFromEndPoint;
-import nl.unimaas.ids.data2services.util.SwaggerTest;
+import nl.unimaas.ids.data2services.util.SwaggerManager;
 
 @Path("/")
 public class BasicOperationsController {
     private RegistryPathHandler registryPathHandler;
-    private SwaggerTest swaggerTest;
+    private SwaggerManager swaggerTest;
     //private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
 
     public BasicOperationsController(){
         System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
         
         
-        swaggerTest = SwaggerTest.getInstance();
+        swaggerTest = SwaggerManager.getInstance();
         
         registryPathHandler = new RegistryPathHandler();
         registryPathHandler.registerHandler(new TestPathHandler());

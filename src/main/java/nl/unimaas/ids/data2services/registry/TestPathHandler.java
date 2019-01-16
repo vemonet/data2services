@@ -6,6 +6,7 @@
 package nl.unimaas.ids.data2services.registry;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public class TestPathHandler extends AbstractPathHandler{
         this.queryList = qp.getQueryList();
         
         for(Query query : queryList){
-            this.addPathHandlerModel( query.getPath("{varName}") );
+            this.addQuery( query );
         }
         
         setupSwaggerOperation();
@@ -47,18 +48,18 @@ public class TestPathHandler extends AbstractPathHandler{
     @Override
     public String process(String path) {
         
-        List<String> pathHandlerModelList = this.getPathHandlerModelList();
+        List<Query> queryList = this.getQueryList();
         
         int i = 0;
-        for(String pathHandlerModel : pathHandlerModelList){
-           if(matchPath(path, pathHandlerModel)){
+        for(Query query : queryList){
+           if(matchPath(path, query.getPath())){
                
 //               return "true";
                
-               String query = this.queryList.get(i).getRawQuery();
+               String sQuery = this.queryList.get(i).getRawQuery();
                
                List<PathElement> pathElementList = decomposePath(path);
-               List<PathElement> pathModelElementList = decomposePath(pathHandlerModel);
+               List<PathElement> pathModelElementList = decomposePath(query.getPath());
                
                List<QueryVariable> queryVariableList = new ArrayList<QueryVariable>();
                int n = 0;
@@ -67,23 +68,23 @@ public class TestPathHandler extends AbstractPathHandler{
                        QueryVariable qv = new QueryVariable();
                        qv.setId("?_"+pathElement.getLabel());
                        qv.setLabel(pathElement.getLabel());
-                       qv.setValue(pathElementList.get(n).getLabel());
+                       qv.setValue(  decodeVariable(pathElementList.get(n).getLabel())  );
                        
                        queryVariableList.add(qv);
                    }
                    n++;
                }
                  
-               //List<QueryVariable> queryVariableList = this.queryList.get(i).variableNameList();
+               //List<QueryVariable> queryVariableList = this.queryList.get(i).getVariables();
               
                for(QueryVariable queryVariable : queryVariableList){
-                   query = query.replaceAll("\\?_"+ queryVariable.getLabel(),  queryVariable.getValue());
+                   sQuery = sQuery.replaceAll("\\?_"+ queryVariable.getLabel(),  queryVariable.getValue());
                }
-               System.out.println(query);
+               System.out.println(sQuery);
                
                String response;
                try {
-                   response = this.httpConnect.sendPost(this.endpointURL, query);
+                   response = this.httpConnect.sendPost(this.endpointURL, sQuery);
                } catch (Exception ex) {
                    Logger.getLogger(TestPathHandler.class.getName()).log(Level.SEVERE, null, ex);
                    return "processing issues";
@@ -119,11 +120,11 @@ public class TestPathHandler extends AbstractPathHandler{
         return true;   
     }
     
-
-    
     private List<PathElement> decomposePath(String path){
+        System.out.println("decomposing path "+ path + "<-");
+        System.out.flush();
         path = path.charAt(0) == '/' ? path.substring(1) : path;
-        
+            
         String[] splitPath = path.split("/");
         List<PathElement> pathElementList = new ArrayList<PathElement>();
         for(String sPathElement : splitPath){
@@ -131,6 +132,12 @@ public class TestPathHandler extends AbstractPathHandler{
             pathElementList.add(pathElement);
         }
         return pathElementList;
+    }
+    
+    //currently encoding to base64
+    private String decodeVariable(String txt){
+        byte[] decodedData = Base64.getDecoder().decode(txt);
+        return new String(decodedData);
     }
     
 }

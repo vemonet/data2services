@@ -12,6 +12,8 @@ import io.swagger.util.Json;
 import java.util.ArrayList;
 import java.util.List;
 import nl.unimaas.ids.data2services.model.IRIEntity;
+import nl.unimaas.ids.data2services.model.Query;
+import nl.unimaas.ids.data2services.model.QueryVariable;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.rdf2api.io.utils.Config;
 
@@ -19,15 +21,15 @@ import nl.unimaas.ids.rdf2api.io.utils.Config;
  *
  * @author nuno
  */
-public class SwaggerTest {
-    private static SwaggerTest singleton = new SwaggerTest();
+public class SwaggerManager {
+    private static SwaggerManager singleton = new SwaggerManager();
     private Swagger swagger;
      
     public static void main(String[] args) {
-        new SwaggerTest().doSwagger();
+        new SwaggerManager().doSwagger();
     }
 
-    public SwaggerTest() {
+    public SwaggerManager() {
         doSwagger();
     }
 
@@ -270,35 +272,42 @@ public class SwaggerTest {
 //        
 //    }
     
-    public void registerOperation(ServiceRealm realm, String sPath){
+    public void registerOperation(ServiceRealm realm, Query query){
+         
+         String sPath = query.getPath();
          if(sPath!=null)
          System.out.println("sPath "+sPath);
          else System.out.println("path is null");
          
          //TODO Make util for this method (used in more than one class)
-         List<String> variableList = this.parseVariblesFromPath(sPath);
+         //List<String> variableList = this.parseVariblesFromPath(sPath);
+         List<QueryVariable> variableList2 = query.getVariables();
          
          //String[] pathSegments = (sPath.charAt(0) == '/' ? sPath.substring(1) : sPath).split("/");        
          Operation operation = new Operation();
          
-         for(String variable : variableList){
+         operation.setDescription(query.getLabel());
+         
+         for(QueryVariable queryVariable : variableList2){
       
                     PathParameter parameter = new PathParameter();
-                    parameter.setName(variable.substring(1, variable.length() - 1)); //TODO improve - logic shouldnt be here
+                    parameter.setName(queryVariable.getLabel().substring(1, queryVariable.getLabel().length() - 1)); //TODO improve - logic shouldnt be here
                     parameter.setRequired(true); //TODO think about this (should it be empty and list entities)?
 
                     //parameter.setEnum(readEntities.getEntities());
                     parameter.setType("string"); //TODO should it be URL (check types)
-                    parameter.setDescription("parameter description");
+                    parameter.setDescription(queryVariable.getLabel());
                     parameter.setIn("path");
 
                     operation.addParameter(parameter);
              }
             
             operation.addResponse("200", new Response());
-              
+            
             Path path = new Path();
             path.setGet(operation);
+            
+            
             
             String sRealm = realm.getRealm().isPresent() ? "/"+ realm.getRealm().get() : "";
             swagger.path( sRealm + sPath, path);
@@ -331,7 +340,7 @@ public class SwaggerTest {
 
 
     
-    public static SwaggerTest getInstance() {
+    public static SwaggerManager getInstance() {
        return singleton;
     }
 

@@ -28,7 +28,7 @@ public class MetaDataSourcesPathHandler extends AbstractPathHandler{
     
     public MetaDataSourcesPathHandler(){
         this.setServiceRealm(new ServiceRealm("test"));
-        this.addPathHandlerModel(this.pathHandlerModel);
+        this.addQuery(this.pathHandlerModel);
         setupSwaggerOperation();
         
         //init data access

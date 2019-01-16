@@ -34,7 +34,7 @@ public class QueryParser {
             System.out.println("query: "+query.getRawQuery());
             System.out.println("variable list:");
             
-            for(QueryVariable qvariable : query.variableNameList()){
+            for(QueryVariable qvariable : query.getVariables()){
                 System.out.print(qvariable.getLabel() + " " + qvariable.getId() + "; ");
             }
             

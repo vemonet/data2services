@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.unimaas.ids.data2services.model.PathElement;
+import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
-import nl.unimaas.ids.data2services.util.SwaggerTest;
+import nl.unimaas.ids.data2services.util.SwaggerManager;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +24,7 @@ import nl.unimaas.ids.data2services.util.SwaggerTest;
 public abstract class AbstractPathHandler {
     
     private ServiceRealm realm = new ServiceRealm();
-    private List<String> pathHandlerModelList = new ArrayList<String>();
+    private List<Query> queryList = new ArrayList<Query>();
     
     
     public void setServiceRealm(ServiceRealm serviceDomain){
@@ -34,20 +35,19 @@ public abstract class AbstractPathHandler {
         return realm;
     }
     
-    public void addPathHandlerModel(String pathHandlerModel){
-        this.pathHandlerModelList.add(pathHandlerModel);
+    public void addQuery(Query query){
+        this.queryList.add(query);
     }
     
-    public List<String> getPathHandlerModelList(){
-        return this.pathHandlerModelList;
+    public List<Query> getQueryList(){
+        return this.queryList;
     }
     
     public void setupSwaggerOperation(){
-          for(String pathHandler : this.pathHandlerModelList){
-            //System.out.println("registering for "+pathHandler);
-            //System.out.flush();
-           
-            SwaggerTest.getInstance().registerOperation(this.getServiceRealm(), pathHandler);
+          for(Query query : this.queryList){
+                //System.out.println("registering for "+pathHandler);
+                //System.out.flush();
+                SwaggerManager.getInstance().registerOperation(this.getServiceRealm(), query);
           }
     }
         

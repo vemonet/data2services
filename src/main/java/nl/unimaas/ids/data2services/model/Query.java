@@ -18,7 +18,7 @@ public class Query {
     private List<QueryVariable> variableNameList;
 
     
-    public List<QueryVariable> variableNameList(){
+    public List<QueryVariable> getVariables(){
         return variableNameList;
     }
     

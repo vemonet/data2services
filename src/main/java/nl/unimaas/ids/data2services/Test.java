@@ -7,7 +7,7 @@ package nl.unimaas.ids.data2services;
 
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
 import nl.unimaas.ids.data2services.registry.TestPathHandler;
-import nl.unimaas.ids.data2services.util.SwaggerTest;
+import nl.unimaas.ids.data2services.util.SwaggerManager;
 
 /**
  *
@@ -16,7 +16,7 @@ import nl.unimaas.ids.data2services.util.SwaggerTest;
 public class Test {
     public static void main(String [] args)
 	{
-            SwaggerTest swaggerTest = SwaggerTest.getInstance();
+            SwaggerManager swaggerTest = SwaggerManager.getInstance();
         
             RegistryPathHandler registryPathHandler = new RegistryPathHandler();
             registryPathHandler.registerHandler(new TestPathHandler());
