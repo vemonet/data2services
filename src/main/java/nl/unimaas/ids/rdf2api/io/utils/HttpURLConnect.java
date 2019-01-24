@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -100,16 +102,30 @@ import org.apache.http.message.BasicNameValuePair;
 
     }
 
+    public String sendPost(String url, String bodyParameters) throws Exception{
+            HashMap<String,String> paramters = new HashMap<String,String>();
+            return sendPost(url, bodyParameters, paramters);
+    }
+    
     // HTTP POST request
-    public String sendPost(String url, String bodyParameters) throws Exception {
-
+    public String sendPost(String url, String bodyParameters, HashMap<String,String> headers) throws Exception {
+        
+        
+        
         //String url = "https://selfsolve.apple.com/wcResults.do";
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(url);
 
         // add header
         post.setHeader("User-Agent", USER_AGENT);
-        post.setHeader("Accept", "application/sparql-results+json,*/*;q=0.9");
+        
+        for (String key : headers.keySet()) {
+            String headersValue = headers.get(key);
+            post.setHeader(key, headersValue);
+        }
+        
+        //post.setHeader("Accept", "application/sparql-results+json,*/*;q=0.9");
+        
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("query",bodyParameters));
         urlParameters.add(new BasicNameValuePair("infer","true"));

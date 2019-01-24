@@ -51,6 +51,8 @@ public abstract class AbstractPathHandler {
           }
     }
         
-    
+    //fixit (find a way of passing other context variables)
     public abstract String process(String path);
+    public abstract String process(String path, String contentType); //improve concept
+
 }

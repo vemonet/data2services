@@ -7,6 +7,7 @@ package nl.unimaas.ids.data2services.registry;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,8 +46,18 @@ public class TestPathHandler extends AbstractPathHandler{
     private void readQueries(){
     }
     
+    
     @Override
-    public String process(String path) {
+    public String process(String path){
+        //tempfix
+        return this.process(path, null);
+    }
+    
+    @Override
+    public String process(String path, String acceptHeader) {
+        
+        if(acceptHeader == null)
+            acceptHeader = "application/sparql-results+json";
         
         List<Query> queryList = this.getQueryList();
         
@@ -84,9 +95,14 @@ public class TestPathHandler extends AbstractPathHandler{
                }
                System.out.println(sQuery);
                
+               //prepare hashmap
+               HashMap<String, String> headers = new HashMap<String, String>();
+               headers.put("Accept", acceptHeader);
+               
+               
                String response;
                try {
-                   response = this.httpConnect.sendPost(this.endpointURL, sQuery);
+                   response = this.httpConnect.sendPost(this.endpointURL, sQuery, headers);
                } catch (Exception ex) {
                    Logger.getLogger(TestPathHandler.class.getName()).log(Level.SEVERE, null, ex);
                    return "processing issues";

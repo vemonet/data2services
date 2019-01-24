@@ -1,5 +1,6 @@
 # Example query0 from file
 # /metadata/sources
+# explore,generic
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX dctypes: <http://purl.org/dc/dcmitype/>
@@ -23,6 +24,7 @@ WHERE {
 
 #Example 2 from file
 #/{source}
+#explore,generic
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 SELECT ?class ?classLabel ?classCount
@@ -47,6 +49,7 @@ WHERE
 
 # Example 2 from file
 # /{source}/{type}
+# explore,generic
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://bioentity.io/vocab/>
@@ -63,6 +66,7 @@ WHERE
 
 # Example3 from file
 # /{source}/{class}/{id}
+# explore,generic
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://bioentity.io/vocab/>

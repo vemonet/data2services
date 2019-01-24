@@ -154,6 +154,8 @@ public class SwaggerManager {
             path.setGet(operation);
             
             swagger.path("/{source}/{rdftype}", path);
+            
+            
     }
     
     private void operationSubjectList(){
@@ -303,6 +305,12 @@ public class SwaggerManager {
              }
             
             operation.addResponse("200", new Response());
+            
+            List<String> contentTypeList = query.getContentTypeList();
+            
+            for(String contentType : contentTypeList){
+                operation.addProduces(contentType);
+            }
             
             Path path = new Path();
             path.setGet(operation);

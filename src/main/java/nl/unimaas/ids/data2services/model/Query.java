@@ -5,6 +5,7 @@
  */
 package nl.unimaas.ids.data2services.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,5 +72,18 @@ public class Query {
     //return path according to a specific variable template
     public String getPath(String variableTemplate) {
         return this.path;
+    }
+
+    public List<String> getContentTypeList() {
+        List<String> contentTypeList = new ArrayList<String>();
+        contentTypeList.add("application/sparql-results+json");
+        contentTypeList.add("application/json");
+        contentTypeList.add("text/xml");
+        contentTypeList.add("text/csv");
+        contentTypeList.add("text/tab-separated-values");
+        contentTypeList.add("text/html");
+        contentTypeList.add("application/rdf+xml");
+        
+        return contentTypeList;
     }
 }

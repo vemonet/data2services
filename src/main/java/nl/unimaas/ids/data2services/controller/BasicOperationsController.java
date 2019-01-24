@@ -170,7 +170,7 @@ public class BasicOperationsController {
     //allow method to be extended
     @GET
     @Path("{path:.*}")
-    public String genericPathHandler(@PathParam("path") List<PathSegment> segments, @Context HttpServletResponse response) throws Exception {
+    public String genericPathHandler(@PathParam("path") List<PathSegment> segments, @Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
         
         
         if(segments.size()==1){
@@ -189,9 +189,13 @@ public class BasicOperationsController {
                 serviceRealm = segments.get(i).getPath();
         }
 
+        String acceptHeader = request.getHeader("Accept");
+        //del*
+        System.out.println("AAAAAAAA "+acceptHeader);
+        
         AbstractPathHandler pathHandler = registryPathHandler.getHandler(new ServiceRealm(serviceRealm), path);
         
-        String result = pathHandler.process(path);
+        String result = pathHandler.process(path, acceptHeader);
         
         return result;
     }
