@@ -67,6 +67,13 @@ public class QueryParser {
                     query.setLabel(this.cleanComment( queryStringArray[0] ));
                 }else if(i==1){
                     query.setPath(this.cleanComment( queryStringArray[1] ));
+                }else if(i==3){
+                    String sTags = this.cleanComment( queryStringArray[2] );
+                    String[] tags = sTags.split(",");
+                                       
+                    for(String s: tags)
+                        query.addTag(s.trim());     
+                    
                 }else{
                     rawQuery += queryStringArray[i] + "\n";
                 }

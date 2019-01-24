@@ -1,5 +1,6 @@
 # Example query1
 # /path/{var}
+# explore, generic
 SELECT ?s ?p ?o WHERE { ?s rdf:type <?_var> ?p ?o.} ORDER BY ?s";
 
 # Example query 2

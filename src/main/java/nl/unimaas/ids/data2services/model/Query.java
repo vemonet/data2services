@@ -16,7 +16,8 @@ public class Query {
     private String label;
     private String rawQuery;
     private String path;
-    private List<QueryVariable> variableNameList;
+    private List<QueryVariable> variableNameList = new ArrayList<QueryVariable>();
+    private List<String> tagList = new ArrayList<String>();
 
     
     public List<QueryVariable> getVariables(){
@@ -85,5 +86,13 @@ public class Query {
         contentTypeList.add("application/rdf+xml");
         
         return contentTypeList;
+    }
+
+    public void addTag(String tag) {
+        this.tagList.add(tag);
+    }
+
+    public List<String> getTagList() {
+        return this.tagList;
     }
 }

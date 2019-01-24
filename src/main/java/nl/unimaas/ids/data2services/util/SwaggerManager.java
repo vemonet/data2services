@@ -305,12 +305,14 @@ public class SwaggerManager {
              }
             
             operation.addResponse("200", new Response());
+
+            List<String> tagList = query.getTagList();
+            for(String tag : tagList)
+                operation.addTag(tag);
             
             List<String> contentTypeList = query.getContentTypeList();
-            
-            for(String contentType : contentTypeList){
+            for(String contentType : contentTypeList)
                 operation.addProduces(contentType);
-            }
             
             Path path = new Path();
             path.setGet(operation);
