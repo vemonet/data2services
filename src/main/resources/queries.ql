@@ -24,7 +24,7 @@ WHERE {
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 select ?graph ?class ?classLabel ?count
-from named <?_graph> # Remove it to get for all graphs
+from named <?_source> # Remove it to get for all graphs
 where
 {
     {
@@ -48,7 +48,7 @@ where
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 select ?graph ?class ?classLabel ?count
-from named <?_graph> # Remove it to get for all graphs
+from named <?_source> # Remove it to get for all graphs
 where
 {
     {
@@ -73,7 +73,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://bioentity.io/vocab/>
 select ?graph ?class ?entity
-from named <?_graph> # Remove it to get for all graphs
+from named <?_source> # Remove it to get for all graphs
 where 
 {
     graph ?graph 
@@ -90,7 +90,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://bioentity.io/vocab/>
 select ?graph ?class ?entity ?property #?value should we put value also?
-from named <?_graph>
+from named <?_source>
 where
 {
     GRAPH ?graph
@@ -109,7 +109,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://bioentity.io/vocab/>
 select ?graph ?class ?entity ?property ?value
-from named <?_graph>
+from named <?_source>
 where
 {
     GRAPH ?graph
@@ -117,6 +117,6 @@ where
         ?entity a ?_class .
         ?entity a ?class .
         ?entity bl:id ?_id .
-        ?entity ?property ?value .
+        ?entity ?_property ?value .
     }
 }
