@@ -15,6 +15,7 @@ import nl.unimaas.ids.data2services.model.PathElement;
 import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.QueryVariable;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
+import nl.unimaas.ids.data2services.util.URI2Prefix;
 import nl.unimaas.ids.rdf2api.io.utils.HttpURLConnect;
 import nl.unimaas.ids.rdf2api.io.utils.QueryParser;
 
@@ -152,10 +153,19 @@ public class TestPathHandler extends AbstractPathHandler{
         return pathElementList;
     }
     
-    //currently encoding to base64
+    //currently decoding to base64 or expands prefix
     private String decodeVariable(String txt){
-        byte[] decodedData = Base64.getDecoder().decode(txt);
-        return new String(decodedData);
+        // check if it's base64
+        try {
+               byte[] decodedData = Base64.getDecoder().decode(txt);
+               return new String(decodedData);
+        } catch(IllegalArgumentException iae) {}
+        
+        // expand prefix ()
+        String uri;
+        uri = URI2Prefix.prefixToUri(txt);
+        return uri;
+      
     }
     
 }
