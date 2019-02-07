@@ -1,6 +1,6 @@
-# Example query0 from file
-# /metadata/sources
-# explore,generic
+# Retrieve all sources (graph)
+# /explore
+# explore
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX dctypes: <http://purl.org/dc/dcmitype/>
@@ -9,77 +9,114 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX idot: <http://identifiers.org/idot/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX void: <http://rdfs.org/ns/void/>
+PREFIX void: <http://rdfs.org/ns/void#>
 SELECT ?source ?graph 
 WHERE {
-    GRAPH <http://data2services/metadata/datasets>
-    {
         ?dataset a dctypes:Dataset ;
-            idot:preferredPrefix ?source ;
-            dcat:accessURL ?graph .
+            idot:preferredPrefix ?source .
         ?version dct:isVersionOf ?dataset ; 
-            dcat:distribution [ a void:Dataset ] .  
-    }
+            dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] .  
 }
 
-#Example 2 from file
-#/{source}
-#explore,generic
+# Retrieving all classes in the triplestore (all rdf:type) with count
+# /explore/{source}/classes
+# explore
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-SELECT ?class ?classLabel ?classCount
-WHERE
+select ?graph ?class ?classLabel ?count
+from named <?_graph> # Remove it to get for all graphs
+where
 {
     {
-        select ?g ?class (count(?class) as ?classCount)  
+        select ?graph ?class (count(?class) as ?count)  
         where {
-            graph ?g {
+            graph ?graph {
                 [] a ?class .
             }
-            # Should be a variable (source)
-            FILTER(?g = <?_source>)
         }
-        group by ?g ?class
-        order by desc(?classCount)
+        group by ?graph ?class
+        order by desc(?count)
     }
     optional {
         ?class rdfs:label ?classLabel .
     }
 }
 
-# Example 2 from file
-# /{source}/{type}
-# explore,generic
+# Retrieving all classes in a source (and adding a /all keyword?) (no count at the moment? Use explore for that)
+# /{source}
+# query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX bl: <http://bioentity.io/vocab/>
-SELECT ?item
-WHERE 
+select ?graph ?class ?classLabel ?count
+from named <?_graph> # Remove it to get for all graphs
+where
 {
-    # Should be a variable (source)
-    GRAPH <?_source> 
     {
-        # Should be a variable (type)
-        ?item a ?_type .
+        select ?graph ?class (count(?class) as ?count)  
+        where {
+            graph ?graph {
+                [] a ?class .
+            }
+        }
+        group by ?graph ?class
+        order by desc(?count)
+    }
+    optional {
+        ?class rdfs:label ?classLabel .
     }
 }
 
-# Example3 from file
-# /{source}/{class}/{id}
-# explore,generic
+# Retrieving the list of entities corresponding to the asked type
+# /{source}/{class}
+# query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://bioentity.io/vocab/>
-SELECT ?predicate ?object
-WHERE 
+select ?graph ?class ?entity
+from named <?_graph> # Remove it to get for all graphs
+where 
 {
-    # Should be a variable (source)
-    GRAPH <?_source> 
+    graph ?graph 
     {
-        # Should be a variable (type)
-        ?item a ?_type .
-        # Should be a variable (id)
-        ?item bl:id "?_object" .
-        ?item ?predicate ?object .
+        ?entity a ?_class .
+        ?entity a ?class .
+    }
+}
+
+# If the provided is a class retrieving the item filtering by ID.
+# /{source}/{class}/{id}
+# query
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX bl: <http://bioentity.io/vocab/>
+select ?graph ?class ?entity ?property #?value should we put value also?
+from named <?_graph>
+where
+{
+    GRAPH ?graph
+    {
+        ?entity a ?_class .
+        ?entity a ?class .
+        ?entity bl:id ?_id .
+        ?entity ?property ?value .
+    }
+}
+
+# Get the property of the retrieved entity.
+# /{source}/{class}/{id}/{property}
+# query
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX bl: <http://bioentity.io/vocab/>
+select ?graph ?class ?entity ?property ?value
+from named <?_graph>
+where
+{
+    GRAPH ?graph
+    {
+        ?entity a ?_class .
+        ?entity a ?class .
+        ?entity bl:id ?_id .
+        ?entity ?property ?value .
     }
 }
