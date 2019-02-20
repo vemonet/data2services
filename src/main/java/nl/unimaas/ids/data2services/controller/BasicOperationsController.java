@@ -60,9 +60,7 @@ public class BasicOperationsController {
     //private ReadEntitiesFromEndPoint readEntities =  new ReadEntitiesFromEndPoint();
 
     public BasicOperationsController(){
-        System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
-        
-        
+                        
         swaggerTest = SwaggerManager.getInstance();
         
         registryPathHandler = new RegistryPathHandler();
@@ -191,7 +189,7 @@ public class BasicOperationsController {
 
         String acceptHeader = request.getHeader("Accept");
         //del*
-        System.out.println("AAAAAAAA "+acceptHeader);
+        //System.out.println("AAAAAAAA "+acceptHeader);
         
         AbstractPathHandler pathHandler = registryPathHandler.getHandler(new ServiceRealm(serviceRealm), path);
         

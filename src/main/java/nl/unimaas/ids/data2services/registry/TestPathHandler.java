@@ -96,6 +96,16 @@ public class TestPathHandler extends AbstractPathHandler{
                }
                System.out.println(sQuery);
                
+               String finalQuery = sQuery;
+               //String[] queryLines = sQuery.split("\n");
+               //for(String queryLine : queryLines){
+               //    for(QueryVariable queryVariable : queryVariableList){
+               //        if(!queryLine.trim().startsWith(queryVariable.getValue())){
+               //            finalQuery += queryLine+"\n";
+               //        }
+               //    }
+               //}               
+               
                //prepare hashmap
                HashMap<String, String> headers = new HashMap<String, String>();
                headers.put("Accept", acceptHeader);
@@ -103,7 +113,7 @@ public class TestPathHandler extends AbstractPathHandler{
                
                String response;
                try {
-                   response = this.httpConnect.sendPost(this.endpointURL, sQuery, headers);
+                   response = this.httpConnect.sendPost(this.endpointURL, finalQuery, headers);
                } catch (Exception ex) {
                    Logger.getLogger(TestPathHandler.class.getName()).log(Level.SEVERE, null, ex);
                    return "processing issues";

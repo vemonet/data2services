@@ -109,8 +109,7 @@ import org.apache.http.message.BasicNameValuePair;
     
     // HTTP POST request
     public String sendPost(String url, String bodyParameters, HashMap<String,String> headers) throws Exception {
-        
-        
+
         
         //String url = "https://selfsolve.apple.com/wcResults.do";
         HttpClient client = HttpClientBuilder.create().build();
