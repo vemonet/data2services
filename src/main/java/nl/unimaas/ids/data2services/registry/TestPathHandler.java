@@ -49,11 +49,6 @@ public class TestPathHandler extends AbstractPathHandler{
         setupSwaggerOperation();
     }
     
-    
-    private void readQueries(){
-    }
-    
-    
     @Override
     public String process(String path){
         //tempfix
@@ -86,7 +81,8 @@ public class TestPathHandler extends AbstractPathHandler{
                        QueryVariable qv = new QueryVariable();
                        qv.setId(pathElement.getLabel(), true);
                        qv.setLabel(pathElement.getLabel());
-                       qv.setValue(  decodeVariable(pathElementList.get(n).getLabel())  );
+                       //qv.setValue(  decodeVariable(pathElementList.get(n).getLabel())  );
+                       qv.setValue(  pathElementList.get(n).getLabel() );
                        qv.setRawValue(pathElementList.get(n).getLabel());
                        
                        queryVariableList.add(qv);
@@ -98,7 +94,7 @@ public class TestPathHandler extends AbstractPathHandler{
                
                
                for(QueryVariable queryVariable : queryVariableList){
-                   System.out.println(queryVariable.getId() + " " + queryVariable.getValue());
+                   System.out.println(">>>>>    "+ queryVariable.getId() + " " + queryVariable.getValue());
                    sQuery = sQuery.replaceAll("\\?_"+ queryVariable.getId(),  queryVariable.getValue());
                }
                System.out.println(sQuery);
