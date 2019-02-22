@@ -10,55 +10,41 @@ PREFIX idot: <http://identifiers.org/idot/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX void: <http://rdfs.org/ns/void#>
-SELECT ?source ?graph 
+PREFIX bl: <http://w3id.org/biolink/vocab/>
+PREFIX sio: <http://semanticscience.org/resource/>
+SELECT ?source
 WHERE {
         ?dataset a dctypes:Dataset ;
             idot:preferredPrefix ?source .
         ?version dct:isVersionOf ?dataset ; 
-            dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] .  
+            dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
 }
 
-# Retrieving all classes in the triplestore (all rdf:type) with count
-# /explore/{source}/classes
-# explore
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX dct: <http://purl.org/dc/terms/>
-select ?graph ?class ?classLabel ?count
-from named <?_source> # Remove it to get for all graphs
-where
-{
-    {
-        select ?graph ?class (count(?class) as ?count)  
-        where {
-            graph ?graph {
-                [] a ?class .
-            }
-        }
-        group by ?graph ?class
-        order by desc(?count)
-    }
-    optional {
-        ?class rdfs:label ?classLabel .
-    }
-}
-
-# Retrieving all classes in a source (and adding a /all keyword?) (no count at the moment? Use explore for that)
+# Retrieving all classes from a source
 # /{source}
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-select ?graph ?class ?classLabel ?count
-from named <?_source> # Remove it to get for all graphs
-where
+PREFIX bl: <http://w3id.org/biolink/vocab/>
+PREFIX dctypes: <http://purl.org/dc/dcmitype/>
+PREFIX idot: <http://identifiers.org/idot/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX sio: <http://semanticscience.org/resource/>
+SELECT ?source ?class ?classLabel ?count
+WHERE
 {
     {
-        select ?graph ?class (count(?class) as ?count)  
-        where {
+        SELECT ?source ?class (count(?class) as ?count)  
+        WHERE {
+            ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+            ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+            FILTER(?source = "?_source")
             graph ?graph {
                 [] a ?class .
             }
         }
-        group by ?graph ?class
+        group by ?source ?class
         order by desc(?count)
     }
     optional {
@@ -66,57 +52,78 @@ where
     }
 }
 
-# Retrieving the list of entities corresponding to the asked type
+# Retrieving the list of entities corresponding to requested class
 # /{source}/{class}
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX bl: <http://bioentity.io/vocab/>
-select ?graph ?class ?entity
-from named <?_source> # Remove it to get for all graphs
-where 
-{
-    graph ?graph 
+PREFIX bl: <http://w3id.org/biolink/vocab/>
+PREFIX sio: <http://semanticscience.org/resource/>
+SELECT ?source ?class ?entity
+WHERE 
+{   
+    ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+    ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+    FILTER(?source = "?_source")
+    GRAPH ?graph 
     {
-        ?entity a ?_class .
-        ?entity a ?class .
+        ?entityUri a bl:Drug .
+        ?entityUri a ?class .
+        ?entityUri bl:id ?entity
     }
 }
 
-# If the provided is a class retrieving the item filtering by ID.
+# Retrieving the properties of the requested instance of a class, filtering the class on its ID
 # /{source}/{class}/{id}
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX bl: <http://bioentity.io/vocab/>
-select ?graph ?class ?entity ?property #?value should we put value also?
-from named <?_source>
-where
+PREFIX bl: <http://w3id.org/biolink/vocab/>
+PREFIX dctypes: <http://purl.org/dc/dcmitype/>
+PREFIX idot: <http://identifiers.org/idot/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX sio: <http://semanticscience.org/resource/>
+SELECT ?source ?class ?entity ?property ?value
+WHERE
 {
+    ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+    ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+    FILTER(?source = "?_source")
     GRAPH ?graph
     {
-        ?entity a ?_class .
-        ?entity a ?class .
-        ?entity bl:id ?_id .
-        ?entity ?property ?value .
+        ?entityUri a ?_class .
+        ?entityUri a ?class .
+        ?entityUri bl:id ?entity .
+        ?entityUri ?property ?value .
+        FILTER(?entity = "?_id")
     }
 }
 
-# Get the property of the retrieved entity.
+# Retrieving the value of specific property of the requested instance of a class, filtering the class on its ID
 # /{source}/{class}/{id}/{property}
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX bl: <http://bioentity.io/vocab/>
-select ?graph ?class ?entity ?property ?value
-from named <?_source>
-where
+PREFIX bl: <http://w3id.org/biolink/vocab/>
+PREFIX dctypes: <http://purl.org/dc/dcmitype/>
+PREFIX idot: <http://identifiers.org/idot/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX sio: <http://semanticscience.org/resource/>
+SELECT ?source ?class ?entity ?property ?value
+WHERE
 {
+    ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+    ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+    FILTER(?source = "?_source")
     GRAPH ?graph
     {
-        ?entity a ?_class .
-        ?entity a ?class .
-        ?entity bl:id ?_id .
-        ?entity ?_property ?value .
+        ?entityUri a ?_class .
+        ?entityUri a ?class .
+        ?entityUri bl:id ?entity .
+        ?entityUri ?property ?value .
+        FILTER(?entity = "?_id")
+        FILTER(?property = ?_property)
     }
 }
