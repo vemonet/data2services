@@ -68,7 +68,7 @@ WHERE
     GRAPH ?graph 
     {
         ?entityUri a bl:Drug .
-        ?entityUri a ?class .
+        ?entityUri a ?_class .
         ?entityUri bl:id ?entity
     }
 }
