@@ -24,7 +24,7 @@ import nl.unimaas.ids.rdf2api.io.utils.QueryParser;
  *
  * @author nuno
  */
-public class TestPathHandler extends AbstractPathHandler{
+public class BiolinkPathHandler extends AbstractPathHandler{
     
     List<Query> queryList;
     private HttpURLConnect httpConnect = new HttpURLConnect(); 
@@ -32,12 +32,12 @@ public class TestPathHandler extends AbstractPathHandler{
     
     
     public static void main(String [ ] args){
-        new TestPathHandler().postProcess("hello");
+        new BiolinkPathHandler().postProcess("hello");
     }
     
-    public TestPathHandler(){
+    public BiolinkPathHandler(){
         
-        this.setServiceRealm(new ServiceRealm("test"));
+        this.setServiceRealm(new ServiceRealm("biolink"));
         
         QueryParser qp = new QueryParser();
         this.queryList = qp.getQueryList();
@@ -121,7 +121,7 @@ public class TestPathHandler extends AbstractPathHandler{
                try {
                    response = this.httpConnect.sendPost(this.endpointURL, finalQuery, headers);
                } catch (Exception ex) {
-                   Logger.getLogger(TestPathHandler.class.getName()).log(Level.SEVERE, null, ex);
+                   Logger.getLogger(BiolinkPathHandler.class.getName()).log(Level.SEVERE, null, ex);
                    return "processing issues";
                }
                
@@ -171,7 +171,7 @@ public class TestPathHandler extends AbstractPathHandler{
            }
            
         } catch (Exception ex) {
-            Logger.getLogger(TestPathHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BiolinkPathHandler.class.getName()).log(Level.SEVERE, null, ex);
             return response;
         }
         

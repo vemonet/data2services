@@ -35,7 +35,7 @@ import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.data2services.registry.AbstractPathHandler;
 
 import nl.unimaas.ids.data2services.registry.RegistryPathHandler;
-import nl.unimaas.ids.data2services.registry.TestPathHandler;
+import nl.unimaas.ids.data2services.registry.BiolinkPathHandler;
 import nl.unimaas.ids.data2services.util.SwaggerManager;
 
 @Path("/")
@@ -49,7 +49,7 @@ public class BasicOperationsController {
         swaggerTest = SwaggerManager.getInstance();
         
         registryPathHandler = new RegistryPathHandler();
-        registryPathHandler.registerHandler(new TestPathHandler());
+        registryPathHandler.registerHandler(new BiolinkPathHandler());
        //registryPathHandler.registerHandler(new MetaDataSourcesPathHandler());
     }
     
