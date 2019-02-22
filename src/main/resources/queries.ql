@@ -11,6 +11,7 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX void: <http://rdfs.org/ns/void#>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
+PREFIX sio: <http://semanticscience.org/resource/>
 SELECT ?source
 WHERE {
         ?dataset a dctypes:Dataset ;
@@ -29,6 +30,7 @@ PREFIX dctypes: <http://purl.org/dc/dcmitype/>
 PREFIX idot: <http://identifiers.org/idot/>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX sio: <http://semanticscience.org/resource/>
 SELECT ?source ?class ?classLabel ?count
 WHERE
 {
@@ -56,6 +58,7 @@ WHERE
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
+PREFIX sio: <http://semanticscience.org/resource/>
 SELECT ?source ?class ?entity
 WHERE 
 {   
@@ -80,6 +83,7 @@ PREFIX dctypes: <http://purl.org/dc/dcmitype/>
 PREFIX idot: <http://identifiers.org/idot/>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX sio: <http://semanticscience.org/resource/>
 SELECT ?source ?class ?entity ?property ?value
 WHERE
 {
@@ -106,6 +110,7 @@ PREFIX dctypes: <http://purl.org/dc/dcmitype/>
 PREFIX idot: <http://identifiers.org/idot/>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX sio: <http://semanticscience.org/resource/>
 SELECT ?source ?class ?entity ?property ?value
 WHERE
 {
