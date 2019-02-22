@@ -93,7 +93,7 @@ public class QueryParser {
             
             List<QueryVariable> variableList = new ArrayList<QueryVariable>();
             
-            Pattern pattern = Pattern.compile(this.VARPATTERN);
+            Pattern pattern = Pattern.compile(QueryParser.VARPATTERN);
             Matcher matcher = pattern.matcher(rawQuery);
             
             QueryVariable qv = null;

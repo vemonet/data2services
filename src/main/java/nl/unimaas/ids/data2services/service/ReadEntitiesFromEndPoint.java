@@ -40,8 +40,7 @@ public class ReadEntitiesFromEndPoint {
 
 	public static void main(String[] args) {
 		System.out.println("Starting...");
-		ReadEntitiesFromEndPoint entities = new ReadEntitiesFromEndPoint();
-
+		//ReadEntitiesFromEndPoint entities = new ReadEntitiesFromEndPoint();
 		//String e = entities.getClassList();
 		//System.out.println(e);
 		// entities.getSubject(new

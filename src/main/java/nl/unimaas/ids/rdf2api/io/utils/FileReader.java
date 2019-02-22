@@ -24,7 +24,7 @@ public class FileReader {
      try {
          InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
          //Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)
-         fileContent = IOUtils.toString(inputStream);
+         fileContent = IOUtils.toString(inputStream, "UTF-8");
          } catch (IOException ex) {
                Logger.getLogger(FileReader.class.getName()).log(Level.SEVERE, null, ex);
          }
