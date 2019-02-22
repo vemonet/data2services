@@ -79,7 +79,7 @@ public class QueryVariable { //TODO should extend Entity?
         return this.value;
     }
     
-    public String setRawValue(String rawValue){
+    public void setRawValue(String rawValue){
         this.rawValue = rawValue;
     }
     

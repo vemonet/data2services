@@ -172,7 +172,9 @@ public class BasicOperationsController {
         
         
         if(segments.size()==1){
-            response.setHeader("refresh","0; ../webjars/swagger-ui/3.19.0/?url=/data2services/rest/swag");
+
+           response.setHeader("refresh","0; ../webjars/swagger-ui/3.19.0/?url=/data2services/rest/swag");
+
             //return swaggerTest.getSwaggerJson();
             return "";
         }
