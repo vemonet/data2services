@@ -11,13 +11,12 @@ import io.swagger.models.parameters.PathParameter;
 import io.swagger.util.Json;
 import java.util.ArrayList;
 import java.util.List;
-import nl.unimaas.ids.data2services.model.IRIEntity;
 import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.QueryVariable;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.rdf2api.io.utils.Config;
 
-/**s
+/**
  *
  * @author nuno
  */

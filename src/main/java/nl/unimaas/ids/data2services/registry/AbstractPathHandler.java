@@ -1,12 +1,7 @@
 package nl.unimaas.ids.data2services.registry;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import nl.unimaas.ids.data2services.model.PathElement;
 import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
 import nl.unimaas.ids.data2services.util.SwaggerManager;

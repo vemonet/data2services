@@ -214,7 +214,7 @@ public class TestPathHandler extends AbstractPathHandler{
         return pathElementList;
     }
     
-    //currently decoding to base64 or expands prefix
+    // decoding to base64 or expands prefix
     private String decodeVariable(String txt){
         
         // check if it's base64
