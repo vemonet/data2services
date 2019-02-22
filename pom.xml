@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>nl.unimaas.ids</groupId>
-	<artifactId>data2services</artifactId>
+	<artifactId>data2services-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>data2services</name>

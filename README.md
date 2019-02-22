@@ -17,5 +17,4 @@ docker run -p 8080:8080 data2services-api
 
 ## Access
 
-http://localhost:8080/data2services/webjars/swagger-ui/3.19.0/?url=http://localhost:8080/data2services/rest/swag
-
+http://localhost:8080/webjars/swagger-ui/3.19.0/?url=http://localhost:8080/rest/swag
