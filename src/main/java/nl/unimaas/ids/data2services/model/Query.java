@@ -77,8 +77,7 @@ public class Query {
 
     public List<String> getContentTypeList() {
         List<String> contentTypeList = new ArrayList<String>();
-        // TODO: use CSV as default response type, should we use JSON?
-        contentTypeList.add("text/csv");
+        contentTypeList.add("text/csv");  // TODO: use CSV as default, should we use JSON? 
         contentTypeList.add("application/sparql-results+json");
         contentTypeList.add("application/json");
         contentTypeList.add("text/xml");
