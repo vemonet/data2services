@@ -48,9 +48,8 @@ public class SwaggerManager {
         String licenseName = config.getProperty("licenseName").orElse("");
         String licenseURL = config.getProperty("licenseURL").orElse("");
         
-        String host = config.getProperty("host").orElse("127.0.0.1:8080");
+        String host = config.getProperty("host").orElse("127.0.0.1:8084");
         String basePath = config.getProperty("basePath").orElse("/");
-
         
         swagger.info(new Info()
                 .title(title)

@@ -31,6 +31,7 @@ public class QueryVariable { //TODO should extend Entity?
       private String label;
       private String id;
       private String value;
+      private String rawValue;
 
     /**
      * @return the id name without brakets
@@ -76,5 +77,13 @@ public class QueryVariable { //TODO should extend Entity?
     
     public String getValue(){
         return this.value;
+    }
+    
+    public String setRawValue(String rawValue){
+        this.rawValue = rawValue;
+    }
+    
+    public String getRawValue(){
+        return this.rawValue;
     }
 }
