@@ -5,7 +5,7 @@ WORKDIR $TMP_DIR
 # caching dependencies - this only runs if pom.xml changes
 COPY pom.xml .
 RUN mvn verify clean --fail-never
-# buld process
+# build process
 COPY src/ ./src/
 RUN mvn install
 

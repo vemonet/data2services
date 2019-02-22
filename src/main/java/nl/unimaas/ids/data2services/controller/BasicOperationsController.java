@@ -54,7 +54,7 @@ public class BasicOperationsController {
     }
     
     @GET
-    @Path("/swag")
+    @Path("/data2services")
     public String swag(@Context HttpServletRequest request) {
         return swaggerTest.getSwaggerJson();
     }
@@ -158,7 +158,7 @@ public class BasicOperationsController {
         
         if(segments.size()==1){
 
-           response.setHeader("refresh","0; ../webjars/swagger-ui/3.19.0/?url=/data2services/rest/swag");
+           response.setHeader("refresh","0; ../webjars/swagger-ui/3.19.0/?url=/rest/data2services");
 
             //return swaggerTest.getSwaggerJson();
             return "";
