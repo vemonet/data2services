@@ -25,13 +25,12 @@ WHERE {
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
-select ?source ?class ?classLabel ?count
-#from named <?_source> # Remove it to get for all graphs
-where
+SELECT ?source ?class ?classLabel ?count
+WHERE
 {
     {
-        select ?source ?class (count(?class) as ?count)  
-        where {
+        SELECT ?source ?class (count(?class) as ?count)  
+        WHERE {
             ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
             ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
             FILTER(?source = "?_source") # Get graph URI for provided source
@@ -43,7 +42,7 @@ where
         group by ?graph ?class
         order by desc(?count)
     }
-    optional {
+    OPTIONAL {
         ?class rdfs:label ?classLabel .
     }
 }
@@ -59,7 +58,6 @@ PREFIX idot: <http://identifiers.org/idot/>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX void: <http://rdfs.org/ns/void#>
 SELECT ?source ?class ?classLabel ?count
-#FROM NAMED <?_source> # Remove it to get for all graphs
 WHERE
 {
     {
@@ -88,7 +86,6 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
 SELECT ?source ?class ?entity
-#from named <?_source> # Remove it to get for all graphs
 WHERE 
 {   
     ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
@@ -114,7 +111,6 @@ PREFIX idot: <http://identifiers.org/idot/>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX void: <http://rdfs.org/ns/void#>
 SELECT ?source ?class ?entity ?property #?value should we put value also?
-#from named <?_source>
 WHERE
 {
     ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
@@ -142,7 +138,6 @@ PREFIX idot: <http://identifiers.org/idot/>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX void: <http://rdfs.org/ns/void#>
 SELECT ?source ?class ?entity ?property ?value
-#from named <?_source>
 WHERE
 {
     ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
