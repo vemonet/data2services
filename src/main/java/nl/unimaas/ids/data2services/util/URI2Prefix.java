@@ -5,15 +5,9 @@
  */
 package nl.unimaas.ids.data2services.util;
 
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import nl.unimaas.ids.rdf2api.io.utils.FileReader;
-import org.apache.commons.io.IOUtils;
 
 /**
  *

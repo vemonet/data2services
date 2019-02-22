@@ -43,7 +43,7 @@ public class QueryParser {
     }
     
     public QueryParser(){
-        fileReader = new FileReader("queries.ql");
+        fileReader = new FileReader("queries.rq");
         
         String fileContent = fileReader.read();
         parse(fileContent); 
@@ -91,7 +91,7 @@ public class QueryParser {
         
         private List<QueryVariable> parseVariables(String rawQuery){
             
-            List<QueryVariable> variableList = new ArrayList();
+            List<QueryVariable> variableList = new ArrayList<QueryVariable>();
             
             Pattern pattern = Pattern.compile(this.VARPATTERN);
             Matcher matcher = pattern.matcher(rawQuery);
