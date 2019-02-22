@@ -136,7 +136,7 @@ public class TestPathHandler extends AbstractPathHandler{
     }
     
     private String postProcess(String response){
-        
+        // Query to get the prefixes/namespace from the GraphDB triplestore
         String query = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n" +
                         "PREFIX dcat: <http://www.w3.org/ns/dcat#>\n" +
                         "PREFIX dctypes: <http://purl.org/dc/dcmitype/>\n" +

@@ -67,7 +67,7 @@ WHERE
     FILTER(?source = "?_source")
     GRAPH ?graph 
     {
-        ?entityUri a bl:Drug .
+        ?entityUri a ?_class .
         ?entityUri a ?class .
         ?entityUri bl:id ?entity
     }
