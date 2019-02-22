@@ -16,7 +16,7 @@ WHERE {
         ?dataset a dctypes:Dataset ;
             idot:preferredPrefix ?source .
         ?version dct:isVersionOf ?dataset ; 
-            dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] .  
+            dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
 }
 
 # Retrieving all classes in the triplestore (all rdf:type) with count
@@ -25,13 +25,17 @@ WHERE {
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
-select ?graph ?class ?classLabel ?count
-from named <?_source> # Remove it to get for all graphs
+select ?source ?class ?classLabel ?count
+#from named <?_source> # Remove it to get for all graphs
 where
 {
     {
-        select ?graph ?class (count(?class) as ?count)  
+        select ?source ?class (count(?class) as ?count)  
         where {
+            ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+            ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+            FILTER(?source = "?_source") # Get graph URI for provided source
+
             graph ?graph {
                 [] a ?class .
             }
@@ -50,18 +54,26 @@ where
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
-select ?graph ?class ?classLabel ?count
-from named <?_source> # Remove it to get for all graphs
-where
+PREFIX dctypes: <http://purl.org/dc/dcmitype/>
+PREFIX idot: <http://identifiers.org/idot/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX void: <http://rdfs.org/ns/void#>
+SELECT ?source ?class ?classLabel ?count
+#FROM NAMED <?_source> # Remove it to get for all graphs
+WHERE
 {
     {
-        select ?graph ?class (count(?class) as ?count)  
-        where {
+        SELECT ?source ?class (count(?class) as ?count)  
+        WHERE {
+            ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+            ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+            FILTER(?source = "?_source") # Get graph URI for provided source
+            
             graph ?graph {
                 [] a ?class .
             }
         }
-        group by ?graph ?class
+        group by ?source ?class
         order by desc(?count)
     }
     optional {
@@ -75,14 +87,19 @@ where
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
-select ?graph ?class ?entity
-from named <?_source> # Remove it to get for all graphs
-where 
-{
-    graph ?graph 
+SELECT ?source ?class ?entity
+#from named <?_source> # Remove it to get for all graphs
+WHERE 
+{   
+    ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+    ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+    FILTER(?source = "?_source") # Get graph URI for provided source
+
+    GRAPH ?graph 
     {
-        ?entity a bl:Drug .
-        ?entity a ?class .
+        ?entityUri a bl:Drug .
+        ?entityUri a ?class .
+        ?entityUri bl:id ?entity
     }
 }
 
@@ -92,16 +109,25 @@ where
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
-select ?graph ?class ?entity ?property #?value should we put value also?
-from named <?_source>
-where
+PREFIX dctypes: <http://purl.org/dc/dcmitype/>
+PREFIX idot: <http://identifiers.org/idot/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX void: <http://rdfs.org/ns/void#>
+SELECT ?source ?class ?entity ?property #?value should we put value also?
+#from named <?_source>
+WHERE
 {
+    ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+    ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+    FILTER(?source = "?_source") # Get graph URI for provided source
+
     GRAPH ?graph
     {
-        ?entity a ?_class .
-        ?entity a ?class .
-        ?entity bl:id ?_id .
-        ?entity ?property ?value .
+        ?entityUri a ?_class .
+        ?entityUri a ?class .
+        ?entityUri bl:id ?entity .
+        ?entityUri ?property ?value .
+        FILTER(?entity = "?_id")
     }
 }
 
@@ -111,15 +137,25 @@ where
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX bl: <http://w3id.org/biolink/vocab/>
-select ?graph ?class ?entity ?property ?value
-from named <?_source>
-where
+PREFIX dctypes: <http://purl.org/dc/dcmitype/>
+PREFIX idot: <http://identifiers.org/idot/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX void: <http://rdfs.org/ns/void#>
+SELECT ?source ?class ?entity ?property ?value
+#from named <?_source>
+WHERE
 {
+    ?dataset a dctypes:Dataset ; idot:preferredPrefix ?source .
+    ?version dct:isVersionOf ?dataset ; dcat:distribution [ a void:Dataset ; dcat:accessURL ?graph ] . 
+    FILTER(?source = "?_source") # Get graph URI for provided source
+
     GRAPH ?graph
     {
-        ?entity a ?_class .
-        ?entity a ?class .
-        ?entity bl:id ?_id .
-        ?entity ?_property ?value .
+        ?entityUri a ?_class .
+        ?entityUri a ?class .
+        ?entityUri bl:id ?entity .
+        ?entityUri ?property ?value .
+        FILTER(?entity = "?_id")
+        FILTER(?property = ?_property)
     }
 }
