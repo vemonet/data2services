@@ -32,7 +32,7 @@ public class BiolinkPathHandler extends AbstractPathHandler{
     
     
     public static void main(String [ ] args){
-        new BiolinkPathHandler().postProcess("hello");
+        new BiolinkPathHandler().replaceNamespacesByPrefixes("hello");
     }
     
     public BiolinkPathHandler(){
@@ -125,7 +125,7 @@ public class BiolinkPathHandler extends AbstractPathHandler{
                    return "processing issues";
                }
                
-               response = postProcess(response);
+               response = replaceNamespacesByPrefixes(response);
                
                return response;
            }
@@ -135,7 +135,7 @@ public class BiolinkPathHandler extends AbstractPathHandler{
         return "path not found";
     }
     
-    private String postProcess(String response){
+    private String replaceNamespacesByPrefixes(String response){
         // Query to get the prefixes/namespace from the GraphDB triplestore
         String query = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n" +
                         "PREFIX dcat: <http://www.w3.org/ns/dcat#>\n" +
