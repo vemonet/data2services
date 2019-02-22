@@ -10,7 +10,8 @@ PREFIX idot: <http://identifiers.org/idot/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX void: <http://rdfs.org/ns/void#>
-SELECT ?source ?graph 
+PREFIX bl: <http://w3id.org/biolink/vocab/>
+SELECT ?source
 WHERE {
         ?dataset a dctypes:Dataset ;
             idot:preferredPrefix ?source .
@@ -23,6 +24,7 @@ WHERE {
 # explore
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX bl: <http://w3id.org/biolink/vocab/>
 select ?graph ?class ?classLabel ?count
 from named <?_source> # Remove it to get for all graphs
 where
@@ -47,6 +49,7 @@ where
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX bl: <http://w3id.org/biolink/vocab/>
 select ?graph ?class ?classLabel ?count
 from named <?_source> # Remove it to get for all graphs
 where
@@ -71,14 +74,14 @@ where
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX bl: <http://bioentity.io/vocab/>
+PREFIX bl: <http://w3id.org/biolink/vocab/>
 select ?graph ?class ?entity
 from named <?_source> # Remove it to get for all graphs
 where 
 {
     graph ?graph 
     {
-        ?entity a ?_class .
+        ?entity a bl:Drug .
         ?entity a ?class .
     }
 }
@@ -88,7 +91,7 @@ where
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX bl: <http://bioentity.io/vocab/>
+PREFIX bl: <http://w3id.org/biolink/vocab/>
 select ?graph ?class ?entity ?property #?value should we put value also?
 from named <?_source>
 where
@@ -107,7 +110,7 @@ where
 # query
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX bl: <http://bioentity.io/vocab/>
+PREFIX bl: <http://w3id.org/biolink/vocab/>
 select ?graph ?class ?entity ?property ?value
 from named <?_source>
 where
