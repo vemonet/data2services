@@ -6,7 +6,6 @@
 package nl.unimaas.ids.data2services.registry;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,7 +15,6 @@ import nl.unimaas.ids.data2services.model.PathElement;
 import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.QueryVariable;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
-import nl.unimaas.ids.data2services.util.URI2Prefix;
 import nl.unimaas.ids.rdf2api.io.utils.HttpURLConnect;
 import nl.unimaas.ids.rdf2api.io.utils.QueryParser;
 
@@ -214,21 +212,18 @@ public class BiolinkPathHandler extends AbstractPathHandler{
         return pathElementList;
     }
     
-    // decoding to base64 or expands prefix
-    private String decodeVariable(String txt){
-        
+    // TODO: decoding to base64 or expands prefix
+    /*private String decodeVariable(String txt){
         // check if it's base64
         try {
                byte[] decodedData = Base64.getDecoder().decode(txt);
                return new String(decodedData);
         } catch(IllegalArgumentException iae) {}
-        
         // expand prefixes to full URI's
         String uri;
         uri = URI2Prefix.prefixToUri(txt);
         return uri;
-      
-    }
+    }*/
     
     private HashMap<String, String> tsv2hash(String txt){
         HashMap<String,String> map = new HashMap<String,String>();
