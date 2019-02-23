@@ -6,6 +6,7 @@
 package nl.unimaas.ids.data2services.registry;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,6 +16,7 @@ import nl.unimaas.ids.data2services.model.PathElement;
 import nl.unimaas.ids.data2services.model.Query;
 import nl.unimaas.ids.data2services.model.QueryVariable;
 import nl.unimaas.ids.data2services.model.ServiceRealm;
+import nl.unimaas.ids.data2services.util.URI2Prefix;
 import nl.unimaas.ids.rdf2api.io.utils.HttpURLConnect;
 import nl.unimaas.ids.rdf2api.io.utils.QueryParser;
 
@@ -37,13 +39,18 @@ public class BiolinkPathHandler extends AbstractPathHandler{
         
         this.setServiceRealm(new ServiceRealm("biolink"));
         
+        // HERE NOW
+        // In this thing he is parsing all the queries:
         QueryParser qp = new QueryParser();
         this.queryList = qp.getQueryList();
+        // We should do it with one file by query and then store the queries in a HashMap?
+        // Then parse each query to build the path
         
         for(Query query : queryList){
             this.addQuery( query );
         }
         
+        // This generate the Swagger based on the queries
         setupSwaggerOperation();
     }
     
@@ -212,18 +219,21 @@ public class BiolinkPathHandler extends AbstractPathHandler{
         return pathElementList;
     }
     
-    // TODO: decoding to base64 or expands prefix
-    /*private String decodeVariable(String txt){
+    // decoding to base64 or expands prefix
+    private String decodeVariable(String txt){
+        
         // check if it's base64
         try {
                byte[] decodedData = Base64.getDecoder().decode(txt);
                return new String(decodedData);
         } catch(IllegalArgumentException iae) {}
+        
         // expand prefixes to full URI's
         String uri;
         uri = URI2Prefix.prefixToUri(txt);
         return uri;
-    }*/
+      
+    }
     
     private HashMap<String, String> tsv2hash(String txt){
         HashMap<String,String> map = new HashMap<String,String>();
